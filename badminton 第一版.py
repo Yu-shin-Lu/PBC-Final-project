@@ -6,6 +6,7 @@ from time import sleep
 
 pygame.init()
 game = pygame.display.set_mode((1000,562))
+pygame.display.set_caption("羽球高高手")
 clock = pygame.time.Clock()
 
 #attributes
@@ -15,7 +16,7 @@ black = ((0, 0, 0))
 #ball obj
 x_ball = 500
 y_ball = 100
-r_ball = 6
+r_ball = 10
 v_ball = 2.6
 rad = pi/180
 ang = choice([180, 0])
@@ -95,13 +96,13 @@ while True:
         #    vx_ball = cos(-80*rad)*7
         #    vy_ball = sin(-80*rad)*7
         if keys[pygame.K_z]:
-            vx_ball = cos(-10 * random.uniform(6.5,8.0) * rad) * 6.5
+            vx_ball = cos(-10 * random.uniform(6.5,8.0) * rad) * 6.0
             vy_ball = sin(-10 * random.uniform(6.5,8.0) * rad) * 6.5
         #elif x_ball > x_p1+40 and x_ball < x_p1+60:
         #    vx_ball = cos(-45 * rad) * 5.5
         #    vy_ball = sin(-45 * rad) * 5.5
         elif keys[pygame.K_x]:
-            vx_ball = cos(-10 * random.uniform(3.0,4.5) * rad) * 5.5
+            vx_ball = cos(-10 * random.uniform(3.0,4.5) * rad) * 4.5
             vy_ball = sin(-10 * random.uniform(3.0,4.5) * rad) * 5.5
         #elif x_ball > x_p1+80 and x_ball < x_p1+100:
         #    vx_ball = cos(-18 * rad) * 5.3
@@ -113,17 +114,25 @@ while True:
         #    vx_ball = cos(-162 * rad) * 5.3
         #    vy_ball = sin(-162 * rad) * 5.3
         if keys[pygame.K_l]:
-            vx_ball = cos(-150 * rad) * 5.5
-            vy_ball = sin(-150 * rad) * 5.5
+            vx_ball = cos(-10 * random.uniform(15.0, 16.2) * rad) * 4.5
+            vy_ball = sin(-10 * random.uniform(15.0, 16.2) * rad) * 5.5
         #elif x_ball > x_p2 + 40 and x_ball < x_p2 + 60:
         #    vx_ball = cos(-135 * rad) * 5.5
         #    vy_ball = sin(-135 * rad) * 5.5
         elif keys[pygame.K_k]:
-            vx_ball = cos(-115 * rad) * 6
-            vy_ball = sin(-115 * rad) * 6
+            vx_ball = cos(-10 * random.uniform(11.5, 13.5) * rad) * 6.0
+            vy_ball = sin(-10 * random.uniform(11.5, 13.5) * rad) * 6.5
         #elif x_ball > x_p2 + 80 and x_ball < x_p2 + 100:
         #    vx_ball = cos(-100 * rad) * 7
         #    vy_ball = sin(-100 * rad) * 7
+	
+    #if x_ball > x_p1 - iden and x_ball < x_p1 + w_p1 + iden and y_ball < 400:
+    #    keys = pygame.key.get_pressed()
+    #    if keys[pygame.K_c]:
+    #        y_p1 = y_p1 - 300
+    #        vx_ball = cos(10 * random.uniform(3.0,4.5) * rad) * 6.5
+    #        vy_ball = sin(10 * random.uniform(3.0,4.5) * rad) * 6.5
+    #        y_p1 = y_p1 + 300
 
     if x_ball > x_net and x_ball < x_net + w_net and y_ball > y_net and y_ball <= y_net + h_net:
         if x_ball > x_net and y_ball > y_net:
@@ -168,7 +177,14 @@ while True:
         x_p1 += v_p1
         if x_p1 + w_p1 >= 495:
             x_p1 = 495 - w_p1
-
+    elif keys[pygame.K_c] and jump_iden == True:
+        y_p1 -= 100
+    y_p1 += 10
+    if y_p1 != 412:
+        jump_iden = False
+    if y_p1 + h_p1 >= 562:
+        y_p1 = 412
+        
     #p2
     get_p2()
     keys = pygame.key.get_pressed()
@@ -191,4 +207,4 @@ while True:
     y_ball += vy_ball
 
     pygame.display.flip()
-    clock.tick(150)
+    clock.tick(100)
