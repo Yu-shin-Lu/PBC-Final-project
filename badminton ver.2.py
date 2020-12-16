@@ -50,7 +50,6 @@ x_net = 495
 y_net = 265
 w_net = 43
 h_net = 400
-
 def get_net():
     game1 = game.convert_alpha()  # 把中間包括背景網子的黑色長方形調為透明
     pygame.draw.rect(game1, (0, 0, 0, 0), ((x_net,y_net),(w_net,h_net)))
@@ -66,10 +65,18 @@ def text2():
 
 p1_score = 0
 p2_score = 0
+
 picture = pygame.image.load("羽球背景.jpg")
 picture = pygame.transform.scale(picture,(1000, 562))
 rect = picture.get_rect()
 rect = rect.move((0, 0))
+
+isJump_p1 = False # 跳的判斷
+jumpCount_p1 = 10
+isJump_p2 = False
+jumpCount_p2 = 10
+
+iden = 20 # 擊球判定
 
 while True:
     for event in pygame.event.get():
@@ -95,7 +102,6 @@ while True:
     if keys[pygame.K_ESCAPE]:
         pygame.quit()
 
-    iden = 20
     if x_ball > x_p1 - iden and x_ball < x_p1 + w_p1 + iden and y_ball > y_p1 - iden:
         keys = pygame.key.get_pressed()
         #if x_ball > x_p1 and x_ball < x_p1+20:
@@ -183,13 +189,20 @@ while True:
         x_p1 += v_p1
         if x_p1 + w_p1 >= 495:
             x_p1 = 495 - w_p1
-    elif keys[pygame.K_c] and jump_iden == True:
-        y_p1 -= 100
-    y_p1 += 10
-    if y_p1 != 412:
-        jump_iden = False
-    if y_p1 + h_p1 >= 562:
-        y_p1 = 412
+
+    if not (isJump_p1): # 跳起來啦
+        if keys[pygame.K_c]:
+            isJump_p1 = True
+    else:
+        if jumpCount_p1 >= -10:
+            neg_p1 = 1
+            if jumpCount_p1 < 0:
+                neg_p1 = -1
+            y_p1 -= (jumpCount_p1 ** 2) * neg_p1 * 0.75
+            jumpCount_p1 -= 1
+        else:
+            isJump_p1 = False
+            jumpCount_p1 = 10
         
     #p2
     get_p2()
@@ -202,6 +215,20 @@ while True:
         x_p2 += v_p2
         if x_p2 + w_p2 >= 1000:
             x_p2 = 1000 - w_p2
+    
+    if not (isJump_p2): # 跳起來啦
+        if keys[pygame.K_UP]:
+            isJump_p2 = True
+    else:
+        if jumpCount_p2 >= -10:
+            neg_p2 = 1
+            if jumpCount_p2 < 0:
+                neg_p2 = -1
+            y_p2 -= (jumpCount_p2 ** 2) * neg_p2 * 0.75
+            jumpCount_p2 -= 1
+        else:
+            isJump_p2 = False
+            jumpCount_p2 = 10
 
     #net
     get_net()
@@ -213,4 +240,4 @@ while True:
     y_ball += vy_ball
 
     pygame.display.flip()
-    clock.tick(500)
+    clock.tick(50)
