@@ -207,4 +207,4 @@ while True:
     y_ball += vy_ball
 
     pygame.display.flip()
-    clock.tick(100)
+    clock.tick(200)

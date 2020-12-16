@@ -66,15 +66,15 @@ def text2():
 
 p1_score = 0
 p2_score = 0
-
+picture = pygame.image.load("羽球背景.jpg")
+picture = pygame.transform.scale(picture,(1000, 562))
+rect = picture.get_rect()
+rect = rect.move((0, 0))
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
-    picture = pygame.image.load("羽球背景.jpg")
-    picture = pygame.transform.scale(picture,(1000, 562))
-    rect = picture.get_rect()
-    rect = rect.move((0, 0))
+
     game.blit(picture, rect)
     
     #text
@@ -212,4 +212,4 @@ while True:
     y_ball += vy_ball
 
     pygame.display.flip()
-    clock.tick(900)
+    clock.tick(500)
