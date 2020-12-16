@@ -128,6 +128,12 @@ while True:
     if x_ball > x_net and x_ball < x_net + w_net and y_ball > y_net and y_ball <= y_net + h_net:
         if x_ball > x_net and y_ball > y_net:
             p2_score += 1
+            sleep(0.8)
+            x_ball = 500
+            y_ball = 100
+            angle = -ang * rad
+            vx_ball = cos(angle) * v_ball
+            vy_ball = sin(angle) * v_ball
         elif x_ball < x_net + w_net and y_ball > y_net:
             p1_score += 1
 
@@ -186,4 +192,3 @@ while True:
 
     pygame.display.flip()
     clock.tick(150)
-	# 我誰
