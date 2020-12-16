@@ -70,6 +70,7 @@ picture = pygame.image.load("羽球背景.jpg")
 picture = pygame.transform.scale(picture,(1000, 562))
 rect = picture.get_rect()
 rect = rect.move((0, 0))
+
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -87,10 +88,10 @@ while True:
     game.blit(my_text2, (840, 0))
 
     keys = pygame.key.get_pressed()
-    if p1_score == 12:
+    if p1_score == 3:
         game.blit(my_text3, (200,300))
-    elif p2_score == 12:
-        game.blit(my_text4, (200,300))
+    elif p2_score == 3:
+        game.blit(my_text4, (700,300))
     if keys[pygame.K_ESCAPE]:
         pygame.quit()
 
