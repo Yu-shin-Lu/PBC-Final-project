@@ -52,9 +52,10 @@ v_p1 = 3
 
 
 def get_p1():
-    pygame.draw.rect(game, black, ((x_p1, y_p1), (w_p1, h_p1)))
-
-
+    p1 = pygame.image.load("檔案_003.png")
+    p1 = pygame.transform.scale(p1, (80, 120))
+    game.blit(p1, ((x_p1, y_p1), (w_p1, h_p1)))
+    
 # p2 obj
 x_p2 = 800
 y_p2 = 412
@@ -64,7 +65,9 @@ v_p2 = 3
 
 
 def get_p2():
-    pygame.draw.rect(game, black, ((x_p2, y_p2), (w_p2, h_p2)))
+    p2 = pygame.image.load("檔案_001_red.ver.png")
+    p2 = pygame.transform.scale(p2, (80, 120))
+    game.blit(p2, ((x_p2, y_p2), (w_p2, h_p2)))
 
 
 # net obj # 原始數值(495, 362, 10, 200)，改過的數值調成語背景網子的範圍相同
@@ -135,13 +138,13 @@ while True:
         # if x_ball > x_p1 and x_ball < x_p1+20:
         #    vx_ball = cos(-80*rad)*7
         #    vy_ball = sin(-80*rad)*7
-        if keys[pygame.K_LCTRL]:
+        if keys[pygame.K_z]:
             vx_ball = cos(-10 * random.uniform(6.5, 8.0) * rad) * 6.0
             vy_ball = sin(-10 * random.uniform(6.5, 8.0) * rad) * 6.5
         # elif x_ball > x_p1+40 and x_ball < x_p1+60:
         #    vx_ball = cos(-45 * rad) * 5.5
         #    vy_ball = sin(-45 * rad) * 5.5
-        elif keys[pygame.K_LSHIFT]:
+        elif keys[pygame.K_x]:
             vx_ball = cos(-10 * random.uniform(3.0, 4.5) * rad) * 4.5
             vy_ball = sin(-10 * random.uniform(3.0, 4.5) * rad) * 5.5
         # elif x_ball > x_p1+80 and x_ball < x_p1+100:
@@ -217,7 +220,7 @@ while True:
             x_p1 = 495 - w_p1
 
     if not isJump_p1:  # 跳起來啦
-        if keys[pygame.K_w]:
+        if keys[pygame.K_c]:
             isJump_p1 = True
     else:
         if jumpCount_p1 >= -10:
