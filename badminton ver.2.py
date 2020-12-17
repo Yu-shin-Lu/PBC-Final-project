@@ -158,24 +158,16 @@ while True:
     if keys[pygame.K_ESCAPE]:
         pygame.quit()
 
+    # p1擊球判定
     if not isJump_p1:
         if x_p1 - iden < x_ball < x_p1 + w_p1 + iden and y_ball > y_p1 - iden:
             keys = pygame.key.get_pressed()
-            # if x_ball > x_p1 and x_ball < x_p1+20:
-            #    vx_ball = cos(-80*rad)*7
-            #    vy_ball = sin(-80*rad)*7
             if keys[pygame.K_z]:
                 vx_ball = cos(-10 * random.uniform(6.5, 8.0) * rad) * 6.0
                 vy_ball = sin(-10 * random.uniform(6.5, 8.0) * rad) * 6.5
-            # elif x_ball > x_p1+40 and x_ball < x_p1+60:
-            #    vx_ball = cos(-45 * rad) * 5.5
-            #    vy_ball = sin(-45 * rad) * 5.5
             elif keys[pygame.K_x]:
                 vx_ball = cos(-10 * random.uniform(3.0, 4.5) * rad) * 4.5
                 vy_ball = sin(-10 * random.uniform(3.0, 4.5) * rad) * 5.5
-            # elif x_ball > x_p1+80 and x_ball < x_p1+100:
-            #    vx_ball = cos(-18 * rad) * 5.3
-            #    vy_ball = sin(-18 * rad) * 5.3
     else:
         if x_ball > x_p1 - iden and x_ball < x_p1 + w_p1 + iden and y_ball < 400:
             keys = pygame.key.get_pressed()
@@ -183,33 +175,24 @@ while True:
                 vx_ball = cos(10 * random.uniform(3.0,4.5) * rad) * 10
                 vy_ball = sin(10 * random.uniform(3.0,4.5) * rad) * 10
 
+    # p2擊球判定
     if not isJump_p2:
         if x_p2 - iden < x_ball < x_p2 + w_p2 + iden and y_ball > y_p2 - iden:
             keys = pygame.key.get_pressed()
-            # if x_ball > x_p2 and x_ball < x_p2 + 20:
-            #    vx_ball = cos(-162 * rad) * 5.3
-            #    vy_ball = sin(-162 * rad) * 5.3
             if keys[pygame.K_l]:
                 vx_ball = cos(-10 * random.uniform(15.0, 16.2) * rad) * 4.5
                 vy_ball = sin(-10 * random.uniform(15.0, 16.2) * rad) * 5.5
-            # elif x_ball > x_p2 + 40 and x_ball < x_p2 + 60:
-            #    vx_ball = cos(-135 * rad) * 5.5
-            #    vy_ball = sin(-135 * rad) * 5.5
             elif keys[pygame.K_k]:
                 vx_ball = cos(-10 * random.uniform(11.5, 13.5) * rad) * 6.0
                 vy_ball = sin(-10 * random.uniform(11.5, 13.5) * rad) * 6.5
-            # elif x_ball > x_p2 + 80 and x_ball < x_p2 + 100:
-            #    vx_ball = cos(-100 * rad) * 7
-            #    vy_ball = sin(-100 * rad) * 7
+    else:
+        if x_ball > x_p2 - iden and x_ball < x_p2 + w_p2 + iden and y_ball < 400:
+            keys = pygame.key.get_pressed()
+            if keys[pygame.K_SEMICOLON]:
+                vx_ball = cos(-10 * random.uniform(18.5, 20.0) * rad) * 10
+                vy_ball = sin(-10 * random.uniform(18.5, 20.0) * rad) * 10
 
-    # if x_ball > x_p1 - iden and x_ball < x_p1 + w_p1 + iden and y_ball < 400:
-    #    keys = pygame.key.get_pressed()
-    #    if keys[pygame.K_c]:
-    #        y_p1 = y_p1 - 300
-    #        vx_ball = cos(10 * random.uniform(3.0,4.5) * rad) * 6.5
-    #        vy_ball = sin(10 * random.uniform(3.0,4.5) * rad) * 6.5
-    #        y_p1 = y_p1 + 300
-
+    # 觸網
     if x_net < x_ball < x_net + w_net and y_net < y_ball <= y_net + h_net:
         if x_ball > x_net and y_ball > y_net:
             p2_score += 1
@@ -218,13 +201,7 @@ while True:
             p1_score += 1
             serve(1)
 
-        # sleep(0.8)
-        # x_ball = 500
-        # y_ball = 100
-        # angle = -ang * rad
-        # vx_ball = cos(angle) * v_ball
-        # vy_ball = sin(angle) * v_ball
-
+    # 落地和出界
     if y_ball > 562 or x_ball > 1000 or x_ball < 0:
         if (0 < x_ball < x_net and y_ball > 562) or (x_ball > 1000):
             p2_score += 1
@@ -233,14 +210,7 @@ while True:
             p1_score += 1
             serve(1)
 
-        # sleep(0.8)
-        # x_ball = 500
-        # y_ball = 100
-        # angle = -ang * rad
-        # vx_ball = cos(angle) * v_ball
-        # vy_ball = sin(angle) * v_ball
-
-    # p1
+    # p1 movement
     get_p1("檔案_003.png")
     keys = pygame.key.get_pressed()
     if keys[pygame.K_a]:
@@ -256,7 +226,7 @@ while True:
         if x_p1 + w_p1 >= 495:
             x_p1 = 495 - w_p1
 
-    if not isJump_p1:  # 跳起來啦
+    if not isJump_p1:
         if keys[pygame.K_w]:
             isJump_p1 = True
     else:
@@ -270,7 +240,7 @@ while True:
             isJump_p1 = False
             jumpCount_p1 = 10
 
-    # p2
+    # p2 movement
     get_p2()
     keys = pygame.key.get_pressed()
     if keys[pygame.K_LEFT]:
@@ -282,7 +252,7 @@ while True:
         if x_p2 + w_p2 >= 1000:
             x_p2 = 1000 - w_p2
 
-    if not isJump_p2:  # 跳起來啦
+    if not isJump_p2:
         if keys[pygame.K_UP]:
             isJump_p2 = True
     else:
