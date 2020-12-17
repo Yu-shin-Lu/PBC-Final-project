@@ -32,7 +32,7 @@ def serve(scorer):
     global vx_ball
     global vy_ball
     global angle
-    sleep(0.8)
+    sleep(0.5)
     x_ball = 500
     y_ball = 100
     angle = -0 * rad if scorer == 1 else -180 * rad
@@ -49,7 +49,7 @@ x_p1 = 150
 y_p1 = 412
 w_p1 = 50
 h_p1 = 150
-v_p1 = 3
+v_p1 = 5
 
 
 def get_p1():
@@ -61,14 +61,14 @@ x_p2 = 800
 y_p2 = 412
 w_p2 = 50
 h_p2 = 150
-v_p2 = 3
+v_p2 = 5
 
 
 def get_p2():
     pygame.draw.rect(game, black, ((x_p2, y_p2), (w_p2, h_p2)))
 
 
-# net obj # 原始數值(495, 362, 10, 200)，改過的數值調成語背景網子的範圍相同
+# net obj # 原始數值(495, 362, 10, 200)，改過的數值調成與背景網子的範圍相同
 x_net = 495
 y_net = 265
 w_net = 43
@@ -225,8 +225,8 @@ while True:
             neg_p1 = 1
             if jumpCount_p1 < 0:
                 neg_p1 = -1
-            y_p1 -= (jumpCount_p1 ** 2) * neg_p1 * 0.75
-            jumpCount_p1 -= 1
+            y_p1 -= (jumpCount_p1 ** 2) * neg_p1 * 0.4
+            jumpCount_p1 -= 0.5
         else:
             isJump_p1 = False
             jumpCount_p1 = 10
@@ -251,8 +251,8 @@ while True:
             neg_p2 = 1
             if jumpCount_p2 < 0:
                 neg_p2 = -1
-            y_p2 -= (jumpCount_p2 ** 2) * neg_p2 * 0.75
-            jumpCount_p2 -= 1
+            y_p2 -= (jumpCount_p2 ** 2) * neg_p2 * 0.4  # 用參數調整起跳與落地速度
+            jumpCount_p2 -= 0.5
         else:
             isJump_p2 = False
             jumpCount_p2 = 10
@@ -267,4 +267,9 @@ while True:
     y_ball += vy_ball
 
     pygame.display.flip()
-    clock.tick(250)
+    clock.tick(75)
+
+# 二碰
+# 球的角度和速度需調整
+# 殺球code
+# 小球(多一個判斷式)
