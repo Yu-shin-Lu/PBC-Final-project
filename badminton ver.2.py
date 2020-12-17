@@ -41,8 +41,10 @@ def serve(scorer):
 
 
 def get_ball():
-    pygame.draw.circle(game, (0, 255, 0), (int(float(x_ball)), int(float(y_ball))), r_ball, 0)
-
+    # pygame.draw.circle(game, (0, 255, 0), (int(float(x_ball)), int(float(y_ball))), r_ball, 0)
+    ball = pygame.image.load('去背羽球.png')
+    ball = pygame.transform.scale(ball, (40, 40))
+    game.blit(ball, (int(float(x_ball)), int(float(y_ball))))
 
 # p1 obj
 x_p1 = 150
