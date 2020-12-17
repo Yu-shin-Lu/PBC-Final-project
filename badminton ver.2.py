@@ -71,8 +71,11 @@ picture = pygame.transform.scale(picture,(1000, 562))
 rect = picture.get_rect()
 rect = rect.move((0, 0))
 
+my_text3 = text2().render('PLAYER 1 WINS!', False, (255,215,0))
+my_text4 = text2().render('PLAYER 2 WINS!', False, (255,215,0))
+
 isJump_p1 = False # 跳的判斷
-jumpCount_p1 = 10
+jumpCount_p1 = 10 # 體力
 isJump_p2 = False
 jumpCount_p2 = 10
 
@@ -88,8 +91,6 @@ while True:
     #text
     my_text = text().render('P layer1  ' + str(p1_score), False, (255,215,0))
     my_text2 = text().render('P layer2  ' + str(p2_score), False, (255,215,0))
-    my_text3 = text2().render('PLAYER 1 WINS!', False, (255,215,0))
-    my_text4 = text2().render('PLAYER 2 WINS!', False, (255,215,0))
 
     game.blit(my_text, (20,0))
     game.blit(my_text2, (840, 0))
