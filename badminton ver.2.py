@@ -31,6 +31,7 @@ def serve(scorer):
     global y_ball
     global vx_ball
     global vy_ball
+    global angle
     sleep(0.8)
     x_ball = 500
     y_ball = 100
