@@ -144,7 +144,7 @@ iden = 20  # 擊球判定
 p1_status = False
 cnt = 0
 
-class Player:
+class Player: # 人物class
     def __init__(self, x, y, w, h, v, path, isJump):
         self.x = x
         self.y = y
@@ -154,13 +154,13 @@ class Player:
         self.path = path
         self.isJump = isJump
 
-    def get_player(self):
+    def get_player(self): # 人物生成
         player_img = pygame.image.load(self.path)
         player_img = pygame.transform.scale(player_img, (80, 120))
         game.blit(player_img, ((self.x, self.y), (self.w, self.h)))
 
 
-    def jump(self, vx_ball, vy_ball):
+    def jump(self, vx_ball, vy_ball): # 人物跳
         if not self.isJump:
             if self.x - iden < x_ball < self.x + self.w + iden and y_ball > y_p1 - iden:
                 keys = pygame.key.get_pressed()
@@ -177,10 +177,23 @@ class Player:
                 if keys[pygame.K_c]:
                     vx_ball = cos(10 * random.uniform(3.0, 4.5) * rad) * 10
                     vy_ball = sin(10 * random.uniform(3.0, 4.5) * rad) * 10
-    def move(self):
+
+    def move(self): # 人物移動
         pass
 
-    def score(self):
+    def wiggle(self): # 人物擺動
+        pass
+
+    def drive(self): # 平抽
+        pass
+
+    def smash(self): # 殺球
+        pass
+
+    def clear(self): # 高遠球
+        pass
+
+    def score(self): # 得分
         pass
 
 
