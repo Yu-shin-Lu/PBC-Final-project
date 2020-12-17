@@ -135,13 +135,13 @@ while True:
         # if x_ball > x_p1 and x_ball < x_p1+20:
         #    vx_ball = cos(-80*rad)*7
         #    vy_ball = sin(-80*rad)*7
-        if keys[pygame.K_z]:
+        if keys[pygame.K_LCTRL]:
             vx_ball = cos(-10 * random.uniform(6.5, 8.0) * rad) * 6.0
             vy_ball = sin(-10 * random.uniform(6.5, 8.0) * rad) * 6.5
         # elif x_ball > x_p1+40 and x_ball < x_p1+60:
         #    vx_ball = cos(-45 * rad) * 5.5
         #    vy_ball = sin(-45 * rad) * 5.5
-        elif keys[pygame.K_x]:
+        elif keys[pygame.K_LSHIFT]:
             vx_ball = cos(-10 * random.uniform(3.0, 4.5) * rad) * 4.5
             vy_ball = sin(-10 * random.uniform(3.0, 4.5) * rad) * 5.5
         # elif x_ball > x_p1+80 and x_ball < x_p1+100:
@@ -217,7 +217,7 @@ while True:
             x_p1 = 495 - w_p1
 
     if not isJump_p1:  # 跳起來啦
-        if keys[pygame.K_c]:
+        if keys[pygame.K_w]:
             isJump_p1 = True
     else:
         if jumpCount_p1 >= -10:
