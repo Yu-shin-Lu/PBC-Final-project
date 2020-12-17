@@ -101,6 +101,9 @@ def move(cnt, img1, img2, img3):
         cnt += 1
     return cnt
 
+def jump(img1):
+    get_p(img1, x_p1, y_p1, w_p1, h_p1)
+
 # 解除殘影
 def return_background():
     game.blit(picture, (0,0))
@@ -218,8 +221,12 @@ while True:
 
     if not isJump_p1:
         if keys[pygame.K_w]:
+            return_background()
+            jump('blue_5.png')
             isJump_p1 = True
     else:
+        return_background()
+        jump('blue_5.png')
         if jumpCount_p1 >= -10:
             neg_p1 = 1
             if jumpCount_p1 < 0:
