@@ -46,6 +46,7 @@ def get_ball():
     ball = pygame.transform.scale(ball, (40, 40))
     game.blit(ball, (int(float(x_ball)), int(float(y_ball))))
 
+
 # p1 obj
 x_p1 = 150
 y_p1 = 412
@@ -53,18 +54,19 @@ w_p1 = 50
 h_p1 = 150
 v_p1 = 5
 
+
 def get_p(path, x, y, w, h):
     p1 = pygame.image.load(path)
     p1 = pygame.transform.scale(p1, (80, 120))
     game.blit(p1, ((x, y), (w, h)))
-    
+
+
 # p2 obj
 x_p2 = 800
 y_p2 = 412
 w_p2 = 50
 h_p2 = 150
 v_p2 = 5
-
 
 # net obj # 原始數值(495, 362, 10, 200)，改過的數值調成與背景網子的範圍相同
 x_net = 495
@@ -88,6 +90,7 @@ def text2():
     font = pygame.font.Font("ARCADECLASSIC.TTF", 30)
     return font
 
+
 # p1圖片左右移動轉換
 def move(cnt, img1, img2, img3):
     if (cnt // 6) % 3 == 0:
@@ -101,14 +104,17 @@ def move(cnt, img1, img2, img3):
         cnt += 1
     return cnt
 
+
 def jump(img1):
     get_p(img1, x_p1, y_p1, w_p1, h_p1)
 
+
 # 解除殘影
 def return_background():
-    game.blit(picture, (0,0))
+    game.blit(picture, (0, 0))
     game.blit(my_text, (20, 0))
     game.blit(my_text2, (840, 0))
+
 
 p1_score = 0
 p2_score = 0
@@ -162,11 +168,11 @@ while True:
                 vx_ball = cos(-10 * random.uniform(3.0, 4.5) * rad) * 4.5
                 vy_ball = sin(-10 * random.uniform(3.0, 4.5) * rad) * 5.5
     else:
-        if x_ball > x_p1 - iden and x_ball < x_p1 + w_p1 + iden and y_ball < 400:
+        if x_p1 - iden < x_ball < x_p1 + w_p1 + iden and y_ball < 400:
             keys = pygame.key.get_pressed()
             if keys[pygame.K_c]:
-                vx_ball = cos(10 * random.uniform(3.0,4.5) * rad) * 10
-                vy_ball = sin(10 * random.uniform(3.0,4.5) * rad) * 10
+                vx_ball = cos(10 * random.uniform(3.0, 4.5) * rad) * 10
+                vy_ball = sin(10 * random.uniform(3.0, 4.5) * rad) * 10
 
     # p2擊球判定
     if not isJump_p2:
@@ -179,7 +185,7 @@ while True:
                 vx_ball = cos(-10 * random.uniform(11.5, 13.5) * rad) * 6.0
                 vy_ball = sin(-10 * random.uniform(11.5, 13.5) * rad) * 6.5
     else:
-        if x_ball > x_p2 - iden and x_ball < x_p2 + w_p2 + iden and y_ball < 400:
+        if x_p2 - iden < x_ball < x_p2 + w_p2 + iden and y_ball < 400:
             keys = pygame.key.get_pressed()
             if keys[pygame.K_SEMICOLON]:
                 vx_ball = cos(-10 * random.uniform(18.5, 20.0) * rad) * 10
