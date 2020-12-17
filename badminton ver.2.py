@@ -67,7 +67,7 @@ v_p2 = 5
 
 
 def get_p2():
-    p2 = pygame.image.load("檔案_001_red.ver.png")
+    p2 = pygame.image.load("red_2.png")
     p2 = pygame.transform.scale(p2, (80, 120))
     game.blit(p2, ((x_p2, y_p2), (w_p2, h_p2)))
 
@@ -95,16 +95,17 @@ def text2():
     return font
 
 # p1圖片左右移動轉換
-def p1move(cnt, p1_status):
-    if p1_status == True and (cnt // 1000) % 2 == 0:
-        get_p1("檔案_003.png")
-        p1_status = False
+def p1move(cnt):
+    if (cnt // 6) % 3 == 0:
+        get_p1("blue_4.png")
+        cnt += 1
+    elif (cnt // 6) % 3 == 1:
+        get_p1("blue_run_01.png")
         cnt += 1
     else:
-        get_p1("檔案_004.png")
-        p1_status = True
+        get_p1("blue_run_02.png")
         cnt += 1
-    return cnt, p1_status
+    return cnt
 
 # p2圖片左右移動轉換
 def p2move():
@@ -134,7 +135,6 @@ jumpCount_p2 = 10
 
 iden = 20  # 擊球判定
 
-p1_status = False
 cnt = 0
 while True:
     for event in pygame.event.get():
@@ -211,18 +211,18 @@ while True:
             serve(1)
 
     # p1 movement
-    get_p1("檔案_003.png")
+    get_p1("blue_4.png")
     keys = pygame.key.get_pressed()
     if keys[pygame.K_a]:
         return_background()
         x_p1 -= v_p1
-        cnt, p1_status = p1move(cnt, p1_status)
+        cnt = p1move(cnt)
         if x_p1 <= 0:
             x_p1 = 0
     elif keys[pygame.K_d]:
         return_background()
         x_p1 += v_p1
-        cnt, p1_status = p1move(cnt, p1_status)
+        cnt = p1move(cnt)
         if x_p1 + w_p1 >= 495:
             x_p1 = 495 - w_p1
 
