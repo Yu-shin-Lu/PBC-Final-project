@@ -26,6 +26,19 @@ vy_ball = sin(angle) * v_ball
 grav = 0.042
 
 
+def serve(scorer):
+    global x_ball
+    global y_ball
+    global vx_ball
+    global vy_ball
+    sleep(0.8)
+    x_ball = 500
+    y_ball = 100
+    angle = -0 * rad if scorer == 1 else -180 * rad
+    vx_ball = cos(angle) * v_ball
+    vy_ball = sin(angle) * v_ball
+
+
 def get_ball():
     pygame.draw.circle(game, (0, 255, 0), (int(float(x_ball)), int(float(y_ball))), r_ball, 0)
 
@@ -85,8 +98,8 @@ picture = pygame.transform.scale(picture, (1000, 562))
 rect = picture.get_rect()
 rect = rect.move((0, 0))
 
-my_text3 = text2().render('PLAYER 1 WINS!', False, (255, 215, 0))
-my_text4 = text2().render('PLAYER 2 WINS!', False, (255, 215, 0))
+my_text3 = text2().render('P LAYER 1 WINS!', False, (255, 215, 0))
+my_text4 = text2().render('P LAYER 2 WINS!', False, (255, 215, 0))
 
 isJump_p1 = False  # 跳的判斷
 jumpCount_p1 = 10  # 體力
@@ -164,34 +177,32 @@ while True:
     if x_net < x_ball < x_net + w_net and y_net < y_ball <= y_net + h_net:
         if x_ball > x_net and y_ball > y_net:
             p2_score += 1
-            sleep(0.8)
-            x_ball = 500
-            y_ball = 100
-            angle = -ang * rad
-            vx_ball = cos(angle) * v_ball
-            vy_ball = sin(angle) * v_ball
+            serve(2)
         elif x_ball < x_net + w_net and y_ball > y_net:
             p1_score += 1
+            serve(1)
 
-        sleep(0.8)
-        x_ball = 500
-        y_ball = 100
-        angle = -ang * rad
-        vx_ball = cos(angle) * v_ball
-        vy_ball = sin(angle) * v_ball
+        # sleep(0.8)
+        # x_ball = 500
+        # y_ball = 100
+        # angle = -ang * rad
+        # vx_ball = cos(angle) * v_ball
+        # vy_ball = sin(angle) * v_ball
 
     if y_ball > 562 or x_ball > 1000 or x_ball < 0:
         if (0 < x_ball < x_net and y_ball > 562) or (x_ball > 1000):
             p2_score += 1
+            serve(2)
         elif (x_net + w_net < x_ball < 1000 and y_ball > 562) or (x_ball < 0):
             p1_score += 1
+            serve(1)
 
-        sleep(0.8)
-        x_ball = 500
-        y_ball = 100
-        angle = -ang * rad
-        vx_ball = cos(angle) * v_ball
-        vy_ball = sin(angle) * v_ball
+        # sleep(0.8)
+        # x_ball = 500
+        # y_ball = 100
+        # angle = -ang * rad
+        # vx_ball = cos(angle) * v_ball
+        # vy_ball = sin(angle) * v_ball
 
     # p1
     get_p1()
