@@ -53,9 +53,8 @@ w_p1 = 50
 h_p1 = 150
 v_p1 = 5
 
-
-def get_p1():
-    p1 = pygame.image.load("檔案_003.png")
+def get_p1(path):
+    p1 = pygame.image.load(path)
     p1 = pygame.transform.scale(p1, (80, 120))
     game.blit(p1, ((x_p1, y_p1), (w_p1, h_p1)))
     
@@ -95,6 +94,27 @@ def text2():
     font = pygame.font.Font("ARCADECLASSIC.TTF", 30)
     return font
 
+# p1圖片左右移動轉換
+def p1move(cnt, p1_status):
+    if p1_status == True and (cnt // 1000) % 2 == 0:
+        get_p1("檔案_003.png")
+        p1_status = False
+        cnt += 1
+    else:
+        get_p1("檔案_004.png")
+        p1_status = True
+        cnt += 1
+    return cnt, p1_status
+
+# p2圖片左右移動轉換
+def p2move():
+    pass
+
+# 解除殘影
+def return_background():
+    game.blit(picture, (0,0))
+    game.blit(my_text, (20, 0))
+    game.blit(my_text2, (840, 0))
 
 p1_score = 0
 p2_score = 0
@@ -114,6 +134,8 @@ jumpCount_p2 = 10
 
 iden = 20  # 擊球判定
 
+p1_status = False
+cnt = 0
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -219,14 +241,18 @@ while True:
         # vy_ball = sin(angle) * v_ball
 
     # p1
-    get_p1()
+    get_p1("檔案_003.png")
     keys = pygame.key.get_pressed()
     if keys[pygame.K_a]:
+        return_background()
         x_p1 -= v_p1
+        cnt, p1_status = p1move(cnt, p1_status)
         if x_p1 <= 0:
             x_p1 = 0
     elif keys[pygame.K_d]:
+        return_background()
         x_p1 += v_p1
+        cnt, p1_status = p1move(cnt, p1_status)
         if x_p1 + w_p1 >= 495:
             x_p1 = 495 - w_p1
 
