@@ -53,10 +53,10 @@ w_p1 = 50
 h_p1 = 150
 v_p1 = 5
 
-def get_p1(path):
+def get_p(path, x, y, w, h):
     p1 = pygame.image.load(path)
     p1 = pygame.transform.scale(p1, (80, 120))
-    game.blit(p1, ((x_p1, y_p1), (w_p1, h_p1)))
+    game.blit(p1, ((x, y), (w, h)))
     
 # p2 obj
 x_p2 = 800
@@ -64,12 +64,6 @@ y_p2 = 412
 w_p2 = 50
 h_p2 = 150
 v_p2 = 5
-
-
-def get_p2():
-    p2 = pygame.image.load("red_2.png")
-    p2 = pygame.transform.scale(p2, (80, 120))
-    game.blit(p2, ((x_p2, y_p2), (w_p2, h_p2)))
 
 
 # net obj # 原始數值(495, 362, 10, 200)，改過的數值調成與背景網子的範圍相同
@@ -95,21 +89,17 @@ def text2():
     return font
 
 # p1圖片左右移動轉換
-def p1move(cnt):
+def move(cnt, img1, img2, img3):
     if (cnt // 6) % 3 == 0:
-        get_p1("blue_4.png")
+        get_p(img1, x_p1, y_p1, w_p1, h_p1)
         cnt += 1
     elif (cnt // 6) % 3 == 1:
-        get_p1("blue_run_01.png")
+        get_p(img2, x_p1, y_p1, w_p1, h_p1)
         cnt += 1
     else:
-        get_p1("blue_run_02.png")
+        get_p(img3, x_p1, y_p1, w_p1, h_p1)
         cnt += 1
     return cnt
-
-# p2圖片左右移動轉換
-def p2move():
-    pass
 
 # 解除殘影
 def return_background():
@@ -211,18 +201,18 @@ while True:
             serve(1)
 
     # p1 movement
-    get_p1("blue_4.png")
+    get_p("blue_4.png", x_p1, y_p1, w_p1, h_p1)
     keys = pygame.key.get_pressed()
     if keys[pygame.K_a]:
         return_background()
         x_p1 -= v_p1
-        cnt = p1move(cnt)
+        cnt = move(cnt, "blue_4.png", "blue_run_01.png", "blue_run_02.png")
         if x_p1 <= 0:
             x_p1 = 0
     elif keys[pygame.K_d]:
         return_background()
         x_p1 += v_p1
-        cnt = p1move(cnt)
+        cnt = move(cnt, "blue_4.png", "blue_run_01.png", "blue_run_02.png")
         if x_p1 + w_p1 >= 495:
             x_p1 = 495 - w_p1
 
@@ -241,7 +231,7 @@ while True:
             jumpCount_p1 = 10
 
     # p2 movement
-    get_p2()
+    get_p("red_2.png", x_p2, y_p2, w_p2, h_p2)
     keys = pygame.key.get_pressed()
     if keys[pygame.K_LEFT]:
         x_p2 -= v_p2
