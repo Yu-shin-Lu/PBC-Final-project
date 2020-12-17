@@ -46,6 +46,7 @@ def get_ball():
     ball = pygame.transform.scale(ball, (40, 40))
     game.blit(ball, (int(float(x_ball)), int(float(y_ball))))
 
+
 # p1 obj
 x_p1 = 150
 y_p1 = 412
@@ -54,11 +55,12 @@ h_p1 = 150
 v_p1 = 5
 
 
-def get_p1():
-    p1 = pygame.image.load("檔案_003.png")
+def get_p1(path):
+    p1 = pygame.image.load(path)
     p1 = pygame.transform.scale(p1, (80, 120))
     game.blit(p1, ((x_p1, y_p1), (w_p1, h_p1)))
-    
+
+
 # p2 obj
 x_p2 = 800
 y_p2 = 412
@@ -96,6 +98,31 @@ def text2():
     return font
 
 
+# p1圖片左右移動轉換
+def p1move(cnt, p1_status):
+    if p1_status == True and (cnt // 1000) % 2 == 0:
+        get_p1("檔案_003.png")
+        p1_status = False
+        cnt += 1
+    else:
+        get_p1("檔案_004.png")
+        p1_status = True
+        cnt += 1
+    return cnt, p1_status
+
+
+# p2圖片左右移動轉換
+def p2move():
+    pass
+
+
+# 解除殘影
+def return_background():
+    game.blit(picture, (0, 0))
+    game.blit(my_text, (20, 0))
+    game.blit(my_text2, (840, 0))
+
+
 p1_score = 0
 p2_score = 0
 
@@ -113,6 +140,49 @@ isJump_p2 = False
 jumpCount_p2 = 10
 
 iden = 20  # 擊球判定
+
+p1_status = False
+cnt = 0
+
+class Player:
+    def __init__(self, x, y, w, h, v, path, isJump):
+        self.x = x
+        self.y = y
+        self.w = w
+        self.h = h
+        self.v = v
+        self.path = path
+        self.isJump = isJump
+
+    def get_player(self):
+        player_img = pygame.image.load(self.path)
+        player_img = pygame.transform.scale(player_img, (80, 120))
+        game.blit(player_img, ((self.x, self.y), (self.w, self.h)))
+
+
+    def jump(self, vx_ball, vy_ball):
+        if not self.isJump:
+            if self.x - iden < x_ball < self.x + self.w + iden and y_ball > y_p1 - iden:
+                keys = pygame.key.get_pressed()
+                if keys[pygame.K_z]:
+                    vx_ball = cos(-10 * random.uniform(6.5, 8.0) * rad) * 6.0
+                    vy_ball = sin(-10 * random.uniform(6.5, 8.0) * rad) * 6.5
+                elif keys[pygame.K_x]:
+                    vx_ball = cos(-10 * random.uniform(3.0, 4.5) * rad) * 4.5
+                    vy_ball = sin(-10 * random.uniform(3.0, 4.5) * rad) * 5.5
+
+        else:
+            if x_ball > self.x - iden and x_ball < self.x + self.w + iden and y_ball < 400:
+                keys = pygame.key.get_pressed()
+                if keys[pygame.K_c]:
+                    vx_ball = cos(10 * random.uniform(3.0, 4.5) * rad) * 10
+                    vy_ball = sin(10 * random.uniform(3.0, 4.5) * rad) * 10
+    def move(self):
+        pass
+
+    def score(self):
+        pass
+
 
 while True:
     for event in pygame.event.get():
@@ -158,8 +228,8 @@ while True:
         if x_ball > x_p1 - iden and x_ball < x_p1 + w_p1 + iden and y_ball < 400:
             keys = pygame.key.get_pressed()
             if keys[pygame.K_c]:
-                vx_ball = cos(10 * random.uniform(3.0,4.5) * rad) * 10
-                vy_ball = sin(10 * random.uniform(3.0,4.5) * rad) * 10
+                vx_ball = cos(10 * random.uniform(3.0, 4.5) * rad) * 10
+                vy_ball = sin(10 * random.uniform(3.0, 4.5) * rad) * 10
 
     if not isJump_p2:
         if x_p2 - iden < x_ball < x_p2 + w_p2 + iden and y_ball > y_p2 - iden:
@@ -196,13 +266,6 @@ while True:
             p1_score += 1
             serve(1)
 
-        # sleep(0.8)
-        # x_ball = 500
-        # y_ball = 100
-        # angle = -ang * rad
-        # vx_ball = cos(angle) * v_ball
-        # vy_ball = sin(angle) * v_ball
-
     if y_ball > 562 or x_ball > 1000 or x_ball < 0:
         if (0 < x_ball < x_net and y_ball > 562) or (x_ball > 1000):
             p2_score += 1
@@ -211,22 +274,19 @@ while True:
             p1_score += 1
             serve(1)
 
-        # sleep(0.8)
-        # x_ball = 500
-        # y_ball = 100
-        # angle = -ang * rad
-        # vx_ball = cos(angle) * v_ball
-        # vy_ball = sin(angle) * v_ball
-
     # p1
-    get_p1()
+    get_p1("檔案_003.png")
     keys = pygame.key.get_pressed()
     if keys[pygame.K_a]:
+        return_background()
         x_p1 -= v_p1
+        cnt, p1_status = p1move(cnt, p1_status)
         if x_p1 <= 0:
             x_p1 = 0
     elif keys[pygame.K_d]:
+        return_background()
         x_p1 += v_p1
+        cnt, p1_status = p1move(cnt, p1_status)
         if x_p1 + w_p1 >= 495:
             x_p1 = 495 - w_p1
 
