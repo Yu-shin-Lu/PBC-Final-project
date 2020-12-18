@@ -70,7 +70,7 @@ v_p2 = 5
 
 # net obj # 原始數值(495, 362, 10, 200)，改過的數值調成與背景網子的範圍相同
 x_net = 495
-y_net = 265
+y_net = 315
 w_net = 43
 h_net = 400
 
@@ -134,6 +134,8 @@ jumpCount_p2 = 10
 
 iden = 20  # 擊球判定
 
+isHit_p1 = False
+
 cnt = 0
 while True:
     for event in pygame.event.get():
@@ -158,32 +160,39 @@ while True:
         pygame.quit()
 
     # p1擊球判定
-    if not isJump_p1:
-        if x_p1 - iden < x_ball < x_p1 + w_p1 + iden and y_ball > y_p1 - iden:
-            keys = pygame.key.get_pressed()
-            if keys[pygame.K_z]:
-                vx_ball = cos(-10 * random.uniform(6.5, 8.0) * rad) * 6.0
-                vy_ball = sin(-10 * random.uniform(6.5, 8.0) * rad) * 6.5
-            elif keys[pygame.K_x]:
-                vx_ball = cos(-10 * random.uniform(3.0, 4.5) * rad) * 4.5
-                vy_ball = sin(-10 * random.uniform(3.0, 4.5) * rad) * 5.5
+    if not isHit_p1:
+        if not isJump_p1:
+            if x_p1 - iden < x_ball < x_p1 + w_p1 + iden and y_ball > y_p1 - iden:
+                keys = pygame.key.get_pressed()
+                if keys[pygame.K_z]:
+                    vx_ball = cos(-10 * random.uniform(6.5, 8.0) * rad) * 8.0
+                    vy_ball = sin(-10 * random.uniform(6.5, 8.0) * rad) * 9.0
+                    isHit_p1 = True
+                elif keys[pygame.K_x]:
+                    vx_ball = cos(-10 * random.uniform(3.0, 4.5) * rad) * 7.5
+                    vy_ball = sin(-10 * random.uniform(3.0, 4.5) * rad) * 9.0
+                    isHit_p1 = True
+        else:
+            if x_p1 - iden < x_ball < x_p1 + w_p1 + iden and y_ball < 400:
+                keys = pygame.key.get_pressed()
+                if keys[pygame.K_c]:
+                    vx_ball = cos(10 * random.uniform(3.0, 4.5) * rad) * 20
+                    vy_ball = sin(10 * random.uniform(3.0, 4.5) * rad) * 40
+                    isHit_p1 = True
     else:
-        if x_p1 - iden < x_ball < x_p1 + w_p1 + iden and y_ball < 400:
-            keys = pygame.key.get_pressed()
-            if keys[pygame.K_c]:
-                vx_ball = cos(10 * random.uniform(3.0, 4.5) * rad) * 20
-                vy_ball = sin(10 * random.uniform(3.0, 4.5) * rad) * 40
+        if x_ball >= 500:
+            isHit_p1 = False
 
     # p2擊球判定
     if not isJump_p2:
         if x_p2 - iden < x_ball < x_p2 + w_p2 + iden and y_ball > y_p2 - iden:
             keys = pygame.key.get_pressed()
             if keys[pygame.K_l]:
-                vx_ball = cos(-10 * random.uniform(15.0, 16.2) * rad) * 4.5
-                vy_ball = sin(-10 * random.uniform(15.0, 16.2) * rad) * 5.5
+                vx_ball = cos(-10 * random.uniform(15.0, 16.2) * rad) * 7.5
+                vy_ball = sin(-10 * random.uniform(15.0, 16.2) * rad) * 9.0
             elif keys[pygame.K_k]:
-                vx_ball = cos(-10 * random.uniform(11.5, 13.5) * rad) * 6.0
-                vy_ball = sin(-10 * random.uniform(11.5, 13.5) * rad) * 6.5
+                vx_ball = cos(-10 * random.uniform(11.5, 13.5) * rad) * 8.0
+                vy_ball = sin(-10 * random.uniform(11.5, 13.5) * rad) * 9.0
     else:
         if x_p2 - iden < x_ball < x_p2 + w_p2 + iden and y_ball < 400:
             keys = pygame.key.get_pressed()
