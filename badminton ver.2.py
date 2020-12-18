@@ -139,6 +139,7 @@ jumpCount_p2 = 10
 iden = 20  # 擊球判定
 
 isHit_p1 = False
+isHit_p2 = False
 
 cnt = 0
 while True:
@@ -194,21 +195,28 @@ while True:
             isHit_p1 = False
 
     # p2擊球判定
-    if not isJump_p2:
-        if x_p2 - iden < x_ball < x_p2 + w_p2 + iden and y_ball > y_p2 - iden:
-            keys = pygame.key.get_pressed()
-            if keys[pygame.K_l]:
-                vx_ball = cos(-10 * random.uniform(15.0, 16.2) * rad) * 9
-                vy_ball = sin(-10 * random.uniform(15.0, 16.2) * rad) * 10
-            elif keys[pygame.K_k]:
-                vx_ball = cos(-10 * random.uniform(11.5, 13.5) * rad) * 9
-                vy_ball = sin(-10 * random.uniform(11.5, 13.5) * rad) * 9.5
+    if not isHit_p2:
+        if not isJump_p2:
+            if x_p2 - iden < x_ball < x_p2 + w_p2 + iden and y_ball > y_p2 - iden:
+                keys = pygame.key.get_pressed()
+                if keys[pygame.K_l]:
+                    vx_ball = cos(-10 * random.uniform(15.0, 16.2) * rad) * 9
+                    vy_ball = sin(-10 * random.uniform(15.0, 16.2) * rad) * 10
+                    isHit_p2 = True
+                elif keys[pygame.K_k]:
+                    vx_ball = cos(-10 * random.uniform(11.5, 13.5) * rad) * 9
+                    vy_ball = sin(-10 * random.uniform(11.5, 13.5) * rad) * 9.5
+                    isHit_p2 = True
+        else:
+            if x_p2 - iden < x_ball < x_p2 + w_p2 + iden and y_ball < 400:
+                keys = pygame.key.get_pressed()
+                if keys[pygame.K_SEMICOLON]:
+                    vx_ball = cos(-10 * random.uniform(18.5, 20.0) * rad) * 10
+                    vy_ball = sin(-10 * random.uniform(18.5, 20.0) * rad) * 25
+                    isHit_p2 = True
     else:
-        if x_p2 - iden < x_ball < x_p2 + w_p2 + iden and y_ball < 400:
-            keys = pygame.key.get_pressed()
-            if keys[pygame.K_SEMICOLON]:
-                vx_ball = cos(-10 * random.uniform(18.5, 20.0) * rad) * 10
-                vy_ball = sin(-10 * random.uniform(18.5, 20.0) * rad) * 25
+        if x_ball <= 500 or y_ball >= 562:
+            isHit_p2 = False
 
     # 觸網
     if x_net < x_ball < x_net + w_net and y_net < y_ball <= y_net + h_net:
