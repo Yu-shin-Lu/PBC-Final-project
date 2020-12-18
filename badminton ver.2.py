@@ -3,15 +3,14 @@ from math import sin, cos, pi
 import random
 from random import choice
 from time import sleep
+from pathlib import Path
 
 pygame.init()
 game = pygame.display.set_mode((1000, 562))
 pygame.display.set_caption("羽球高高手")
 clock = pygame.time.Clock()
 
-# attributes
-white = (255, 255, 255)
-black = (0, 0, 0)
+IMG_DIR = Path(__file__).resolve().parent / '圖檔'
 
 # ball obj
 x_ball = 500
@@ -40,9 +39,10 @@ def serve(scorer):
     vy_ball = sin(angle) * v_ball
 
 
-def get_ball():
+def get_ball(img_name):
     # pygame.draw.circle(game, (0, 255, 0), (int(float(x_ball)), int(float(y_ball))), r_ball, 0)
-    ball = pygame.image.load('去背羽球.png')
+    path = IMG_DIR / img_name
+    ball = pygame.image.load(str(path))
     ball = pygame.transform.scale(ball, (40, 40))
     game.blit(ball, (int(float(x_ball)), int(float(y_ball))))
 
@@ -55,8 +55,9 @@ h_p1 = 150
 v_p1 = 5
 
 
-def get_p(path, x, y, w, h):
-    p1 = pygame.image.load(path)
+def get_p(img_name, x, y, w, h):
+    path = IMG_DIR / img_name
+    p1 = pygame.image.load(str(path))
     p1 = pygame.transform.scale(p1, (80, 120))
     game.blit(p1, ((x, y), (w, h)))
 
@@ -132,7 +133,7 @@ p1_win_text = text_cele().render('P LAYER 1 WINS!', False, (255, 215, 0))
 p2_win_text = text_cele().render('P LAYER 2 WINS!', False, (255, 215, 0))
 
 isJump_p1 = False  # 跳的判斷
-jumpCount_p1 = 10  # 體力
+jumpCount_p1 = 10
 isJump_p2 = False
 jumpCount_p2 = 10
 
@@ -174,7 +175,6 @@ while True:
     if not isHit_p1:
         if not isJump_p1:
             if x_p1 - iden < x_ball < x_p1 + w_p1 + iden and y_ball > y_p1 - iden:
-                keys = pygame.key.get_pressed()
                 if keys[pygame.K_z]:
                     vx_ball = cos(-10 * random.uniform(6.5, 8.0) * rad) * 5
                     vy_ball = sin(-10 * random.uniform(6.5, 8.0) * rad) * 5
@@ -185,7 +185,6 @@ while True:
                     isHit_p1 = True
         else:
             if x_p1 - iden < x_ball < x_p1 + w_p1 + iden and y_ball < 400:
-                keys = pygame.key.get_pressed()
                 if keys[pygame.K_c]:
                     vx_ball = cos(10 * random.uniform(3.0, 4.5) * rad) * 40
                     vy_ball = sin(10 * random.uniform(3.0, 4.5) * rad) * 30
@@ -198,7 +197,6 @@ while True:
     if not isHit_p2:
         if not isJump_p2:
             if x_p2 - iden < x_ball < x_p2 + w_p2 + iden and y_ball > y_p2 - iden:
-                keys = pygame.key.get_pressed()
                 if keys[pygame.K_l]:
                     vx_ball = cos(-10 * random.uniform(15.0, 16.2) * rad) * 9
                     vy_ball = sin(-10 * random.uniform(15.0, 16.2) * rad) * 10
@@ -209,7 +207,6 @@ while True:
                     isHit_p2 = True
         else:
             if x_p2 - iden < x_ball < x_p2 + w_p2 + iden and y_ball < 400:
-                keys = pygame.key.get_pressed()
                 if keys[pygame.K_SEMICOLON]:
                     vx_ball = cos(-10 * random.uniform(18.5, 20.0) * rad) * 10
                     vy_ball = sin(-10 * random.uniform(18.5, 20.0) * rad) * 25
@@ -240,7 +237,6 @@ while True:
 
     # p1 movement
     get_p("blue_4.png", x_p1, y_p1, w_p1, h_p1)
-    keys = pygame.key.get_pressed()
     if keys[pygame.K_a]:
         return_background()
         x_p1 -= v_p1
@@ -274,7 +270,6 @@ while True:
 
     # p2 movement
     get_p("red_2.png", x_p2, y_p2, w_p2, h_p2)
-    keys = pygame.key.get_pressed()
     if keys[pygame.K_LEFT]:
         x_p2 -= v_p2
         if x_p2 <= 495 + w_net:
@@ -302,7 +297,7 @@ while True:
     get_net()
 
     # ball
-    get_ball()
+    get_ball('去背羽球.png')
     vy_ball += grav
     x_ball += vx_ball
     y_ball += vy_ball
