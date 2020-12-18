@@ -191,7 +191,7 @@ while True:
                     vy_ball = sin(10 * random.uniform(3.0, 4.5) * rad) * 30
                     isHit_p1 = True
     else:
-        if x_ball >= 500 or y_ball >= 562:
+        if x_ball >= 500 or y_ball >= 562 or (x_net < x_ball < x_net + w_net and y_net < y_ball <= y_net + h_net):
             isHit_p1 = False
 
     # p2擊球判定
@@ -204,8 +204,8 @@ while True:
                     vy_ball = sin(-10 * random.uniform(15.0, 16.2) * rad) * 10
                     isHit_p2 = True
                 elif keys[pygame.K_k]:
-                    vx_ball = cos(-10 * random.uniform(11.5, 13.5) * rad) * 9
-                    vy_ball = sin(-10 * random.uniform(11.5, 13.5) * rad) * 9.5
+                    vx_ball = cos(-10 * random.uniform(11.5, 13.5) * rad) * 5
+                    vy_ball = sin(-10 * random.uniform(11.5, 13.5) * rad) * 5
                     isHit_p2 = True
         else:
             if x_p2 - iden < x_ball < x_p2 + w_p2 + iden and y_ball < 400:
@@ -215,7 +215,7 @@ while True:
                     vy_ball = sin(-10 * random.uniform(18.5, 20.0) * rad) * 25
                     isHit_p2 = True
     else:
-        if x_ball <= 500 or y_ball >= 562:
+        if x_ball <= 500 or y_ball >= 562 or (x_net < x_ball < x_net + w_net and y_net < y_ball <= y_net + h_net):
             isHit_p2 = False
 
     # 觸網
