@@ -80,13 +80,13 @@ def get_net():
     pygame.draw.rect(game1, (0, 0, 0, 0), ((x_net, y_net), (w_net, h_net)))
 
 
-def text():
+def text_score():
     pygame.font.init()
     font = pygame.font.Font("ARCADECLASSIC.TTF", 30)
     return font
 
 
-def text2():
+def text_cele():
     font = pygame.font.Font("ARCADECLASSIC.TTF", 30)
     return font
 
@@ -112,8 +112,12 @@ def jump(img1):
 # 解除殘影
 def return_background():
     game.blit(picture, (0, 0))
-    game.blit(my_text, (20, 0))
-    game.blit(my_text2, (840, 0))
+    game.blit(p1_score_text, (20, 0))
+    game.blit(p2_score_text, (840, 0))
+    if p1_win and not p2_win:
+        game.blit(p1_win_text, (200, 300))
+    elif p2_win and not p1_win:
+        game.blit(p2_win_text, (700, 300))
 
 
 p1_score = 0
@@ -124,8 +128,8 @@ picture = pygame.transform.scale(picture, (1000, 562))
 rect = picture.get_rect()
 rect = rect.move((0, 0))
 
-my_text3 = text2().render('P LAYER 1 WINS!', False, (255, 215, 0))
-my_text4 = text2().render('P LAYER 2 WINS!', False, (255, 215, 0))
+p1_win_text = text_cele().render('P LAYER 1 WINS!', False, (255, 215, 0))
+p2_win_text = text_cele().render('P LAYER 2 WINS!', False, (255, 215, 0))
 
 isJump_p1 = False  # 跳的判斷
 jumpCount_p1 = 10  # 體力
@@ -145,17 +149,23 @@ while True:
     game.blit(picture, rect)
 
     # text
-    my_text = text().render('P layer1  ' + str(p1_score), False, (255, 215, 0))
-    my_text2 = text().render('P layer2  ' + str(p2_score), False, (255, 215, 0))
+    p1_score_text = text_score().render('P layer1  ' + str(p1_score), False, (255, 215, 0))
+    p2_score_text = text_score().render('P layer2  ' + str(p2_score), False, (255, 215, 0))
 
-    game.blit(my_text, (20, 0))
-    game.blit(my_text2, (840, 0))
+    game.blit(p1_score_text, (20, 0))
+    game.blit(p2_score_text, (840, 0))
+
+    # 慶祝訊息
+    p1_win = False
+    p2_win = False
+    if p1_score == 3:
+        p1_win = True
+        game.blit(p1_win_text, (200, 300))
+    elif p2_score == 3:
+        p2_win = True
+        game.blit(p2_win_text, (700, 300))
 
     keys = pygame.key.get_pressed()
-    if p1_score == 3:
-        game.blit(my_text3, (200, 300))
-    elif p2_score == 3:
-        game.blit(my_text4, (700, 300))
     if keys[pygame.K_ESCAPE]:
         pygame.quit()
 
@@ -165,8 +175,8 @@ while True:
             if x_p1 - iden < x_ball < x_p1 + w_p1 + iden and y_ball > y_p1 - iden:
                 keys = pygame.key.get_pressed()
                 if keys[pygame.K_z]:
-                    vx_ball = cos(-10 * random.uniform(6.5, 8.0) * rad) * 9
-                    vy_ball = sin(-10 * random.uniform(6.5, 8.0) * rad) * 12
+                    vx_ball = cos(-10 * random.uniform(6.5, 8.0) * rad) * 5
+                    vy_ball = sin(-10 * random.uniform(6.5, 8.0) * rad) * 5
                     isHit_p1 = True
                 elif keys[pygame.K_x]:
                     vx_ball = cos(-10 * random.uniform(3.0, 4.5) * rad) * 9
