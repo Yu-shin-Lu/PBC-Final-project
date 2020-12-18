@@ -171,8 +171,8 @@ while True:
         if x_p1 - iden < x_ball < x_p1 + w_p1 + iden and y_ball < 400:
             keys = pygame.key.get_pressed()
             if keys[pygame.K_c]:
-                vx_ball = cos(10 * random.uniform(3.0, 4.5) * rad) * 10
-                vy_ball = sin(10 * random.uniform(3.0, 4.5) * rad) * 10
+                vx_ball = cos(10 * random.uniform(3.0, 4.5) * rad) * 20
+                vy_ball = sin(10 * random.uniform(3.0, 4.5) * rad) * 40
 
     # p2擊球判定
     if not isJump_p2:
@@ -188,8 +188,8 @@ while True:
         if x_p2 - iden < x_ball < x_p2 + w_p2 + iden and y_ball < 400:
             keys = pygame.key.get_pressed()
             if keys[pygame.K_SEMICOLON]:
-                vx_ball = cos(-10 * random.uniform(18.5, 20.0) * rad) * 10
-                vy_ball = sin(-10 * random.uniform(18.5, 20.0) * rad) * 10
+                vx_ball = cos(-10 * random.uniform(18.5, 20.0) * rad) * 20
+                vy_ball = sin(-10 * random.uniform(18.5, 20.0) * rad) * 40
 
     # 觸網
     if x_net < x_ball < x_net + w_net and y_net < y_ball <= y_net + h_net:
