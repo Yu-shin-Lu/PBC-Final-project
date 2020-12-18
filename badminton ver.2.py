@@ -17,7 +17,7 @@ black = (0, 0, 0)
 x_ball = 500
 y_ball = 100
 r_ball = 10
-v_ball = 5
+v_ball = 3.5
 rad = pi / 180
 ang = choice([180, 0])
 angle = -ang * rad
@@ -165,8 +165,8 @@ while True:
             if x_p1 - iden < x_ball < x_p1 + w_p1 + iden and y_ball > y_p1 - iden:
                 keys = pygame.key.get_pressed()
                 if keys[pygame.K_z]:
-                    vx_ball = cos(-10 * random.uniform(6.5, 8.0) * rad) * 9
-                    vy_ball = sin(-10 * random.uniform(6.5, 8.0) * rad) * 12
+                    vx_ball = cos(-10 * random.uniform(6.5, 8.0) * rad) * 5
+                    vy_ball = sin(-10 * random.uniform(6.5, 8.0) * rad) * 5
                     isHit_p1 = True
                 elif keys[pygame.K_x]:
                     vx_ball = cos(-10 * random.uniform(3.0, 4.5) * rad) * 9
@@ -180,7 +180,7 @@ while True:
                     vy_ball = sin(10 * random.uniform(3.0, 4.5) * rad) * 30
                     isHit_p1 = True
     else:
-        if x_ball >= 500:
+        if x_ball >= 500 or y_ball >= 562:
             isHit_p1 = False
 
     # p2擊球判定
