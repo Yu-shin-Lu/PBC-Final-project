@@ -204,8 +204,8 @@ while True:
                     vy_ball = sin(-10 * random.uniform(15.0, 16.2) * rad) * 10
                     isHit_p2 = True
                 elif keys[pygame.K_k]:
-                    vx_ball = cos(-10 * random.uniform(11.5, 13.5) * rad) * 9
-                    vy_ball = sin(-10 * random.uniform(11.5, 13.5) * rad) * 9.5
+                    vx_ball = cos(-10 * random.uniform(11.5, 13.5) * rad) * 5
+                    vy_ball = sin(-10 * random.uniform(11.5, 13.5) * rad) * 5
                     isHit_p2 = True
         else:
             if x_p2 - iden < x_ball < x_p2 + w_p2 + iden and y_ball < 400:
