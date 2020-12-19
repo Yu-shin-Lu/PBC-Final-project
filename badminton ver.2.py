@@ -10,6 +10,7 @@ pygame.display.set_caption("羽球高高手")
 clock = pygame.time.Clock()
 
 IMG_PATH = Path(__file__).resolve().parent / '圖檔'
+MUSIC_PATH = Path(__file__).resolve().parent / '音效'
 
 # ball obj
 x_ball = 500
@@ -127,6 +128,11 @@ picture = pygame.image.load("羽球背景.jpg")
 picture = pygame.transform.scale(picture, (1000, 562))
 rect = picture.get_rect()
 rect = rect.move((0, 0))
+
+# 背景音效
+music_path = MUSIC_PATH / "背景音-選項1.mp3"
+pygame.mixer.music.load(str(music_path))
+pygame.mixer.music.play(loops = 0, start = 0.0)
 
 p1_win_text = text_cele().render('P LAYER 1 WINS!', False, (255, 215, 0))
 p2_win_text = text_cele().render('P LAYER 2 WINS!', False, (255, 215, 0))
