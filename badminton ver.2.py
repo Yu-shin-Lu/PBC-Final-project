@@ -124,7 +124,8 @@ def return_background():
 p1_score = 0
 p2_score = 0
 
-picture = pygame.image.load("羽球背景.jpg")
+
+picture = pygame.image.load(str(IMG_PATH) + str('/') + '羽球背景.jpg')
 picture = pygame.transform.scale(picture, (1000, 562))
 rect = picture.get_rect()
 rect = rect.move((0, 0))
