@@ -1,7 +1,6 @@
 import pygame
 from math import sin, cos, pi
 import random
-from random import choice
 from time import sleep
 from pathlib import Path
 
@@ -10,7 +9,7 @@ game = pygame.display.set_mode((1000, 562))
 pygame.display.set_caption("羽球高高手")
 clock = pygame.time.Clock()
 
-IMG_DIR = Path(__file__).resolve().parent / '圖檔'
+IMG_PATH = Path(__file__).resolve().parent / '圖檔'
 
 # ball obj
 x_ball = 500
@@ -18,7 +17,7 @@ y_ball = 100
 r_ball = 10
 v_ball = 3.5
 rad = pi / 180
-ang = choice([180, 0])
+ang = random.choice([180, 0])
 angle = -ang * rad
 vx_ball = cos(angle) * v_ball
 vy_ball = sin(angle) * v_ball
@@ -41,7 +40,7 @@ def serve(scorer):
 
 def get_ball(img_name):
     # pygame.draw.circle(game, (0, 255, 0), (int(float(x_ball)), int(float(y_ball))), r_ball, 0)
-    path = IMG_DIR / img_name
+    path = IMG_PATH / img_name
     ball = pygame.image.load(str(path))
     ball = pygame.transform.scale(ball, (40, 40))
     game.blit(ball, (int(float(x_ball)), int(float(y_ball))))
@@ -56,7 +55,7 @@ v_p1 = 5
 
 
 def get_p(img_name, x, y, w, h):
-    path = IMG_DIR / img_name
+    path = IMG_PATH / img_name
     p1 = pygame.image.load(str(path))
     p1 = pygame.transform.scale(p1, (80, 120))
     game.blit(p1, ((x, y), (w, h)))
@@ -88,7 +87,7 @@ def text_score():
 
 
 def text_cele():
-    font = pygame.font.Font("ARCADECLASSIC.TTF", 30)
+    font = pygame.font.Font("ARCADECLASSIC.TTF", 50)
     return font
 
 
@@ -137,7 +136,7 @@ jumpCount_p1 = 10
 isJump_p2 = False
 jumpCount_p2 = 10
 
-iden = 20  # 擊球判定
+IDEN = 20  # 擊球判定
 
 isHit_p1 = False
 isHit_p2 = False
@@ -162,10 +161,10 @@ while True:
     p2_win = False
     if p1_score == 3:
         p1_win = True
-        game.blit(p1_win_text, (200, 300))
+        game.blit(p1_win_text, (100, 300))
     elif p2_score == 3:
         p2_win = True
-        game.blit(p2_win_text, (700, 300))
+        game.blit(p2_win_text, (600, 300))
 
     keys = pygame.key.get_pressed()
     if keys[pygame.K_ESCAPE]:
@@ -174,7 +173,7 @@ while True:
     # p1擊球判定
     if not isHit_p1:
         if not isJump_p1:
-            if x_p1 - iden < x_ball < x_p1 + w_p1 + iden and y_ball > y_p1 - iden:
+            if x_p1 - IDEN < x_ball < x_p1 + w_p1 + IDEN and y_ball > y_p1 - IDEN:
                 if keys[pygame.K_z]:
                     vx_ball = cos(-10 * random.uniform(6.5, 8.0) * rad) * 5
                     vy_ball = sin(-10 * random.uniform(6.5, 8.0) * rad) * 5
@@ -184,7 +183,7 @@ while True:
                     vy_ball = sin(-10 * random.uniform(3.0, 4.5) * rad) * 9
                     isHit_p1 = True
         else:
-            if x_p1 - iden < x_ball < x_p1 + w_p1 + iden and y_ball < 400:
+            if x_p1 - IDEN < x_ball < x_p1 + w_p1 + IDEN and y_ball < 400:
                 if keys[pygame.K_c]:
                     vx_ball = cos(10 * random.uniform(3.0, 4.5) * rad) * 40
                     vy_ball = sin(10 * random.uniform(3.0, 4.5) * rad) * 30
@@ -196,7 +195,7 @@ while True:
     # p2擊球判定
     if not isHit_p2:
         if not isJump_p2:
-            if x_p2 - iden < x_ball < x_p2 + w_p2 + iden and y_ball > y_p2 - iden:
+            if x_p2 - IDEN < x_ball < x_p2 + w_p2 + IDEN and y_ball > y_p2 - IDEN:
                 if keys[pygame.K_l]:
                     vx_ball = cos(-10 * random.uniform(15.0, 16.2) * rad) * 9
                     vy_ball = sin(-10 * random.uniform(15.0, 16.2) * rad) * 10
@@ -206,7 +205,7 @@ while True:
                     vy_ball = sin(-10 * random.uniform(11.5, 13.5) * rad) * 5
                     isHit_p2 = True
         else:
-            if x_p2 - iden < x_ball < x_p2 + w_p2 + iden and y_ball < 400:
+            if x_p2 - IDEN < x_ball < x_p2 + w_p2 + IDEN and y_ball < 400:
                 if keys[pygame.K_SEMICOLON]:
                     vx_ball = cos(-10 * random.uniform(18.5, 20.0) * rad) * 10
                     vy_ball = sin(-10 * random.uniform(18.5, 20.0) * rad) * 25
@@ -217,11 +216,9 @@ while True:
 
     # 觸網
     if x_net < x_ball < x_net + w_net and y_net < y_ball <= y_net + h_net:
-        # if x_ball > x_net and y_ball > y_net:
         if vx_ball > 0:
             p2_score += 1
             serve(2)
-        # if x_ball < x_net + w_net and y_ball > y_net:
         else:
             p1_score += 1
             serve(1)
@@ -303,9 +300,13 @@ while True:
     y_ball += vy_ball
 
     pygame.display.flip()
-    clock.tick(75)
+    clock.tick(200)
 
-# 二碰
+# 二碰 ok
 # 球的角度和速度需調整
 # 殺球(角度、速度、gravity要調整)(是否要和跳起來整合成一個按鍵)
 # 太靠近網子時怎麼處理
+# 開始介面、重新開始按鈕
+# 音效
+# 網子高度要調整(背景圖)
+# 球要有兩個方向(球頭朝對面)
