@@ -83,9 +83,13 @@ def get_net():
 
 def text_score():
     pygame.font.init()
-    font = pygame.font.Font("ARCADECLASSIC.TTF", 30)
+    font = pygame.font.Font("ARCADECLASSIC.TTF", 80)
     return font
 
+def text_name():
+    pygame.font.init()
+    font1 = pygame.font.Font("ARCADECLASSIC.TTF", 30)
+    return font1
 
 def text_cele():
     font = pygame.font.Font("ARCADECLASSIC.TTF", 50)
@@ -113,13 +117,17 @@ def jump(img1):
 # 解除殘影
 def return_background():
     game.blit(picture, (0, 0))
-    game.blit(p1_score_text, (20, 0))
-    game.blit(p2_score_text, (840, 0))
+    game.blit(p1_score_text, (390, 60))
+    game.blit(p2_score_text, (550, 60))
+    game.blit(p1_name, (20, 0))
+    game.blit(p2_name, (860, 0))
     if p1_win and not p2_win:
         game.blit(p1_win_text, (200, 300))
     elif p2_win and not p1_win:
         game.blit(p2_win_text, (700, 300))
 
+p1_name = text_name().render('P LAYER 1', False, (255, 215, 0))
+p2_name = text_name().render('P LAYER 2', False, (255, 215, 0))
 
 p1_score = 0
 p2_score = 0
@@ -131,7 +139,7 @@ rect = picture.get_rect()
 rect = rect.move((0, 0))
 
 # 背景音效
-music_path = MUSIC_PATH / "背景音-選項1.mp3"
+music_path = MUSIC_PATH / "背景音-選項3.mp3"
 pygame.mixer.music.load(str(music_path))
 pygame.mixer.music.play(loops = 0, start = 0.0)
 
@@ -157,11 +165,13 @@ while True:
     game.blit(picture, rect)
 
     # text
-    p1_score_text = text_score().render('P layer1  ' + str(p1_score), False, (255, 215, 0))
-    p2_score_text = text_score().render('P layer2  ' + str(p2_score), False, (255, 215, 0))
+    p1_score_text = text_score().render(str(p1_score), False, (255, 215, 0))
+    p2_score_text = text_score().render(str(p2_score), False, (255, 215, 0))
 
-    game.blit(p1_score_text, (20, 0))
-    game.blit(p2_score_text, (840, 0))
+    game.blit(p1_score_text, (390, 60))
+    game.blit(p2_score_text, (550, 60))
+    game.blit(p1_name, (20, 0))
+    game.blit(p2_name, (860, 0))
 
     # 慶祝訊息
     p1_win = False
