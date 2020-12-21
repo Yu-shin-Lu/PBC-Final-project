@@ -45,8 +45,7 @@ p1_moving_sprites.append(pygame.image.load(str(IMG_PATH / "blue_4.png")))
 p1_moving_sprites.append(pygame.image.load(str(IMG_PATH / "blue_run_01.png")))
 p1_moving_sprites.append(pygame.image.load(str(IMG_PATH / "blue_run_02.png")))
 
-p2_moving_sprites = [] # 跟p1方向相反
-
+p2_moving_sprites = []  # 跟p1方向相反
 
 
 class Player(pygame.sprite.Sprite):
@@ -65,44 +64,44 @@ class Player(pygame.sprite.Sprite):
         self.image = self.moving_sprites[self.current]
         self.image = pygame.transform.scale(self.image, (80, 120))
 
-
         self.rect = self.image.get_rect()
         self.rect.topleft = [self.x, self.y]
-        
+
     def wiggle(self):
         if self.is_moving_right:
             self.current += 0.3
+            print(self.current)
             if self.current >= len(self.moving_sprites):
                 self.current = 0
                 self.is_moving_right = False
             self.image = self.moving_sprites[int(self.current)]
             self.image = pygame.transform.scale(self.image, (80, 120))
         elif self.is_moving_left:
-            self.current -= 0.3
-            if self.current >= len(self.moving_sprites):
-                self.current = 0
+            self.current -= 0.1
+            print(self.current)
+            if self.current <= 0:
+                self.current = len(self.moving_sprites)
                 self.is_moving_left = False
-            self.image = self.moving_sprites[int(self.current)]
+            self.image = self.moving_sprites[-int(self.current)] # It just works. Dunno why.
             self.image = pygame.transform.scale(self.image, (80, 120))
 
     def move_right(self):
         self.is_moving_right = True
-        self.x += player_speed
-        if self.rect.right >= x_net or self.rect.right >= screen_width:
-            self.x = self.rect.centerx
-
+        self.wiggle()
+        self.rect.x += player_speed
+        if self.rect.right >= x_net:
+            self.rect.right = x_net
+        elif self.rect.right >= screen_width and self.rect.left >= x_net:
+            self.rect.right = screen_width
 
     def move_left(self):
         self.is_moving_left = True
-        self.x -= player_speed
-        if self.rect.left <= 0 or self.rect.left <= x_net:
-            self.x = self.rect.centerx
-
-    # def get_player(self): # 人物生成
-    #     player_img = pygame.image.load(self.path)
-    #     player_img = pygame.transform.scale(player_img, (80, 120))
-    #     game.blit(player_img, ((self.x, self.y), (player_width, player_height)))
-
+        self.wiggle()
+        self.rect.x -= player_speed
+        if self.rect.left <= 0:
+            self.rect.left = 0
+        elif self.rect.left <= x_net and self.rect.right > x_net:
+            self.rect.left = x_net
 
     def jump(self): # 人物跳
         if self.is_jumping:
@@ -113,34 +112,18 @@ class Player(pygame.sprite.Sprite):
                 self.jumpdirection = 1
                 if self.jumpcount < 0:
                     self.jumpdirection = -1
-                self.y -= (self.jumpcount ** 2) * self.jumpdirection * 0.4
+                self.rect.y -= (self.jumpcount ** 2) * self.jumpdirection * 0.4
                 self.jumpcount -= 0.5
             else:
                 self.isjumping = False
                 self.jumpcount = 10
+        else:
+            self.isjumping = True
+    # def get_player(self): # 人物生成
+    #     player_img = pygame.image.load(self.path)
+    #     player_img = pygame.transform.scale(player_img, (80, 120))
+    #     game.blit(player_img, ((self.x, self.y), (player_width, player_height)))
 
-
-    def drive(self): # 平抽
-        pass
-
-    def smash(self): # 殺球
-        pass
-
-    def clear(self): # 高遠球
-        pass
-
-    def score(self): # 得分
-        pass
-
-    def serve(self): # 發球
-        global vx_ball
-        global vy_ball
-        sleep(0.5)
-        self.x = 500
-        self.y = 100
-        angle = -0 * rad if self == p1 else -180 * rad
-        vx_ball = cos(angle) * v_ball
-        vy_ball = sin(angle) * v_ball
 
 class Net:
     def __init__(self, x, y, w, h, net_img):
@@ -154,47 +137,15 @@ class Net:
         self.net_img = game.convert_alpha()  # 把中間包括背景網子的黑色長方形調為透明
         pygame.draw.rect(self.net_img, (0, 0, 0, 0), ((self.x, self.y), (self.w, self.h)))
 
-class Ball:
-    def __init__(self, x, y, r, v, ang):
-        self.x = x
-        self.y = y
-        self.r = r
-        self.v = v
-        self.ang = ang
-
-picture = pygame.image.load("羽球背景.jpg")
+picture = pygame.image.load(str(IMG_PATH) + str('/') + '羽球背景.jpg')
 picture = pygame.transform.scale(picture, (1000, 562))
+rect = picture.get_rect()
+rect = rect.move((0, 0))
 
-def get_ball():
-    ball = pygame.image.load('去背羽球.png')
-    ball = pygame.transform.scale(ball, (40, 40))
-    game.blit(ball, (int(float(x_ball)), int(float(y_ball))))
+p1_moves = pygame.sprite.Group()
+p1 = Player(150, 412, p1_moving_sprites)
+p1_moves.add(p1)
 
-
-def text_score():
-    pygame.font.init()
-    font = pygame.font.Font("ARCADECLASSIC.TTF", 30)
-    return font
-
-
-def text_cele():
-    font = pygame.font.Font("ARCADECLASSIC.TTF", 30)
-    return font
-
-
-def check_if_win():
-    if p1_score == 3:
-        p1_cele = text_cele().render('P LAYER 1 WINS!', False, (255, 215, 0))
-        game.blit(p1_cele, (200, 300))
-    elif p2_score == 3:
-        p2_cele = text_cele().render('P LAYER 2 WINS!', False, (255, 215, 0))
-        game.blit(p2_cele, (700, 300))
-    if keys[pygame.K_ESCAPE]:
-        pygame.quit()
-
-
-# IDEN = 20  # 擊球判定
-# cnt = 0
 while True:
     keys = pygame.key.get_pressed()
     for event in pygame.event.get():
@@ -202,34 +153,13 @@ while True:
             pygame.quit()
             sys.exit()
 
-    p1 = Player(150, 412, p1_moving_sprites)
-    p1 = pygame.transform.scale(p1, (80, 120))
-    game.blit(p1, (p1.x, p1.y))
-    get_net()
-
-    check_if_win()
-
+    game.blit(picture, (0,0))
+    p1_moves.draw(game)
     if keys[pygame.K_d]:
         p1.move_right()
     elif keys[pygame.K_a]:
         p1.move_left()
-    # # p1擊球判定
-    # if not self.isjumping:
-    #     if x_p1 - IDEN < x_ball < x_p1 + w_p1 + IDEN and y_ball > y_p1 - IDEN:
-    #         keys = pygame.key.get_pressed()
-    #         if keys[pygame.K_z]:
-    #             vx_ball = cos(-10 * random.uniform(6.5, 8.0) * rad) * 6.0
-    #             vy_ball = sin(-10 * random.uniform(6.5, 8.0) * rad) * 6.5
-    #         elif keys[pygame.K_x]:
-    #             vx_ball = cos(-10 * random.uniform(3.0, 4.5) * rad) * 4.5
-    #             vy_ball = sin(-10 * random.uniform(3.0, 4.5) * rad) * 5.5
-    # else:
-    #     if x_p1 - IDEN < x_ball < x_p1 + w_p1 + IDEN and y_ball < 400:
-    #         keys = pygame.key.get_pressed()
-    #         if keys[pygame.K_c]:
-    #             vx_ball = cos(10 * random.uniform(3.0, 4.5) * rad) * 10
-    #             vy_ball = sin(10 * random.uniform(3.0, 4.5) * rad) * 10
-
-    game.blit(picture, (0,0))
+    if keys[pygame.K_w]:
+        p1.jump()
     pygame.display.flip()
-    clock.tick(200)
+    clock.tick(50)
