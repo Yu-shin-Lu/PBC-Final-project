@@ -45,7 +45,11 @@ p1_moving_sprites.append(pygame.image.load(str(IMG_PATH / "blue_4.png")))
 p1_moving_sprites.append(pygame.image.load(str(IMG_PATH / "blue_run_01.png")))
 p1_moving_sprites.append(pygame.image.load(str(IMG_PATH / "blue_run_02.png")))
 
-p2_moving_sprites = []  # 跟p1方向相反
+p2_moving_sprites = [] # 跟p1方向相反
+p2_moving_sprites.append(pygame.image.load(str(IMG_PATH / "red_2.png")))
+p2_moving_sprites.append(pygame.image.load(str(IMG_PATH / "red_run_01.png")))
+p2_moving_sprites.append(pygame.image.load(str(IMG_PATH / "red_run_02.png")))
+
 
 
 class Player(pygame.sprite.Sprite):
@@ -70,7 +74,6 @@ class Player(pygame.sprite.Sprite):
     def wiggle(self):
         if self.is_moving_right:
             self.current += 0.3
-            print(self.current)
             if self.current >= len(self.moving_sprites):
                 self.current = 0
                 self.is_moving_right = False
@@ -78,7 +81,6 @@ class Player(pygame.sprite.Sprite):
             self.image = pygame.transform.scale(self.image, (80, 120))
         elif self.is_moving_left:
             self.current -= 0.1
-            print(self.current)
             if self.current <= 0:
                 self.current = len(self.moving_sprites)
                 self.is_moving_left = False
@@ -89,7 +91,7 @@ class Player(pygame.sprite.Sprite):
         self.is_moving_right = True
         self.wiggle()
         self.rect.x += player_speed
-        if self.rect.right >= x_net:
+        if self.rect.right >= x_net and self.rect.left <= x_net:
             self.rect.right = x_net
         elif self.rect.right >= screen_width and self.rect.left >= x_net:
             self.rect.right = screen_width
@@ -137,6 +139,10 @@ class Net:
         self.net_img = game.convert_alpha()  # 把中間包括背景網子的黑色長方形調為透明
         pygame.draw.rect(self.net_img, (0, 0, 0, 0), ((self.x, self.y), (self.w, self.h)))
 
+music_path = MUSIC_PATH / "背景音-選項3.mp3"
+pygame.mixer.music.load(str(music_path))
+pygame.mixer.music.play(loops = 0, start = 0.0)
+
 picture = pygame.image.load(str(IMG_PATH) + str('/') + '羽球背景.jpg')
 picture = pygame.transform.scale(picture, (1000, 562))
 rect = picture.get_rect()
@@ -145,6 +151,10 @@ rect = rect.move((0, 0))
 p1_moves = pygame.sprite.Group()
 p1 = Player(150, 412, p1_moving_sprites)
 p1_moves.add(p1)
+
+p2_moves = pygame.sprite.Group()
+p2 = Player(800, 412, p2_moving_sprites)
+p2_moves.add(p2)
 
 while True:
     keys = pygame.key.get_pressed()
@@ -161,5 +171,14 @@ while True:
         p1.move_left()
     if keys[pygame.K_w]:
         p1.jump()
+        
+    p2_moves.draw(game)
+    if keys[pygame.K_RIGHT]:
+        p2.move_right()
+    elif keys[pygame.K_LEFT]:
+        p2.move_left()
+    if keys[pygame.K_UP]:
+        p2.jump()
+    
     pygame.display.flip()
     clock.tick(50)
