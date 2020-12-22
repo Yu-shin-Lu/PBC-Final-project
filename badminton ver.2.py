@@ -230,12 +230,12 @@ while True:
                     vy_ball = sin(-10 * random.uniform(10.5, 11.5) * rad) * 5.5
                     isHit_p2 = True
                 elif keys[pygame.K_l] and 625 < x_p2 <= 750:
-                    vx_ball = cos(-10 * random.uniform(13.5, 14.0) * rad) * 7
-                    vy_ball = sin(-10 * random.uniform(13.5, 14.0) * rad) * 6
+                    vx_ball = cos(-10 * random.uniform(11.5, 12.0) * rad) * 7
+                    vy_ball = sin(-10 * random.uniform(11.5, 12.0) * rad) * 6
                     isHit_p2 = True
                 elif keys[pygame.K_l] and 750 < x_p2 <= 1000:
-                    vx_ball = cos(-10 * random.uniform(13.5, 14.0) * rad) * 7.5
-                    vy_ball = sin(-10 * random.uniform(13.5, 14.0) * rad) * 8
+                    vx_ball = cos(-10 * random.uniform(13.0, 13.5) * rad) * 7.5
+                    vy_ball = sin(-10 * random.uniform(13.0, 13.5) * rad) * 8
                     isHit_p2 = True
                 elif keys[pygame.K_k] and 500 <= x_p2 <= 750:
                     vx_ball = cos(-10 * random.uniform(10.0, 11.5) * rad) * 7 # 11.5 13.5
@@ -248,8 +248,8 @@ while True:
         else:
             if x_p2 - IDEN < x_ball < x_p2 + w_p2 + IDEN and y_ball < 400:
                 if keys[pygame.K_SEMICOLON]:
-                    vx_ball = cos(-10 * random.uniform(18.5, 20.0) * rad) * 40
-                    vy_ball = sin(-10 * random.uniform(18.5, 20.0) * rad) * 30
+                    vx_ball = cos(-10 * random.uniform(18.5, 25.0) * rad) * 40
+                    vy_ball = sin(-10 * random.uniform(18.5, 25.0) * rad) * 30
                     isHit_p2 = True
     else:
         if x_ball <= 500 or y_ball >= 562 or (x_net < x_ball < x_net + w_net and y_net < y_ball <= y_net + h_net):
