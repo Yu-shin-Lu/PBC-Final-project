@@ -200,12 +200,12 @@ while True:
                     vy_ball = sin(-10 * random.uniform(6.5, 8.0) * rad) * 8
                     isHit_p1 = True
                 elif keys[pygame.K_x] and 0 <= x_p1 <= 250:
-                    vx_ball = cos(-10 * random.uniform(4.0, 4.5) * rad) * 7.5
-                    vy_ball = sin(-10 * random.uniform(4.0, 4.5) * rad) * 8
+                    vx_ball = cos(-10 * random.uniform(4.0, 4.5) * rad) * 7.0
+                    vy_ball = sin(-10 * random.uniform(4.0, 4.5) * rad) * 7.5
                     isHit_p1 = True
                 elif keys[pygame.K_x] and 250 < x_p1 <= 375:
-                    vx_ball = cos(-10 * random.uniform(4.0, 4.5) * rad) * 7
-                    vy_ball = sin(-10 * random.uniform(4.0, 4.5) * rad) * 6
+                    vx_ball = cos(-10 * random.uniform(4.0, 4.5) * rad) * 6.5
+                    vy_ball = sin(-10 * random.uniform(4.0, 4.5) * rad) * 5.5
                     isHit_p1 = True
                 elif keys[pygame.K_x] and 375 < x_p1 <= 500:
                     vx_ball = cos(-10 * random.uniform(6.5, 7.5) * rad) * 5.5
@@ -214,8 +214,8 @@ while True:
         else:
             if x_p1 - IDEN < x_ball < x_p1 + w_p1 + IDEN and y_ball < 400:
                 if keys[pygame.K_c]:
-                    vx_ball = cos(10 * random.uniform(3.5, 5.0) * rad) * 40
-                    vy_ball = sin(10 * random.uniform(3.5, 5.0) * rad) * 30
+                    vx_ball = cos(10 * random.uniform(3.5, 5.0) * rad) * 35
+                    vy_ball = sin(10 * random.uniform(3.5, 5.0) * rad) * 25
                     isHit_p1 = True
     else:
         if x_ball >= 500 or y_ball >= 562 or (x_net < x_ball < x_net + w_net and y_net < y_ball <= y_net + h_net):
@@ -230,12 +230,12 @@ while True:
                     vy_ball = sin(-10 * random.uniform(10.5, 11.5) * rad) * 5.5
                     isHit_p2 = True
                 elif keys[pygame.K_l] and 625 < x_p2 <= 750:
-                    vx_ball = cos(-10 * random.uniform(13.5, 14.0) * rad) * 7
-                    vy_ball = sin(-10 * random.uniform(13.5, 14.0) * rad) * 6
+                    vx_ball = cos(-10 * random.uniform(11.5, 12.0) * rad) * 6.5
+                    vy_ball = sin(-10 * random.uniform(11.5, 12.0) * rad) * 5.5
                     isHit_p2 = True
                 elif keys[pygame.K_l] and 750 < x_p2 <= 1000:
-                    vx_ball = cos(-10 * random.uniform(13.5, 14.0) * rad) * 7.5
-                    vy_ball = sin(-10 * random.uniform(13.5, 14.0) * rad) * 8
+                    vx_ball = cos(-10 * random.uniform(13.0, 13.5) * rad) * 7.0
+                    vy_ball = sin(-10 * random.uniform(13.0, 13.5) * rad) * 7.5
                     isHit_p2 = True
                 elif keys[pygame.K_k] and 500 <= x_p2 <= 750:
                     vx_ball = cos(-10 * random.uniform(10.0, 11.5) * rad) * 7 # 11.5 13.5
@@ -248,8 +248,8 @@ while True:
         else:
             if x_p2 - IDEN < x_ball < x_p2 + w_p2 + IDEN and y_ball < 400:
                 if keys[pygame.K_SEMICOLON]:
-                    vx_ball = cos(-10 * random.uniform(18.5, 20.0) * rad) * 40
-                    vy_ball = sin(-10 * random.uniform(18.5, 20.0) * rad) * 30
+                    vx_ball = cos(-10 * random.uniform(21.5, 23.0) * rad) * 35
+                    vy_ball = sin(-10 * random.uniform(21.5, 23.0) * rad) * 25
                     isHit_p2 = True
     else:
         if x_ball <= 500 or y_ball >= 562 or (x_net < x_ball < x_net + w_net and y_net < y_ball <= y_net + h_net):
@@ -344,10 +344,10 @@ while True:
     clock.tick(200)
 
 # 二碰 ok
-# 球的角度和速度需調整
-# 殺球(角度、速度、gravity要調整)(是否要和跳起來整合成一個按鍵)
-# 太靠近網子時怎麼處理
+# 球的角度和速度需調整 ok
+# 殺球(角度、速度、gravity要調整) ok
 # 開始介面、重新開始按鈕
 # 音效
-# 網子高度要調整(背景圖)
+# 網子高度要調整(背景圖) ok
 # 球要有兩個方向(球頭朝對面)
+# 場地線調整
