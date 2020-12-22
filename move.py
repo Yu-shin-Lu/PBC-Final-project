@@ -139,6 +139,10 @@ class Net:
         self.net_img = game.convert_alpha()  # 把中間包括背景網子的黑色長方形調為透明
         pygame.draw.rect(self.net_img, (0, 0, 0, 0), ((self.x, self.y), (self.w, self.h)))
 
+music_path = MUSIC_PATH / "背景音-選項3.mp3"
+pygame.mixer.music.load(str(music_path))
+pygame.mixer.music.play(loops = 0, start = 0.0)
+
 picture = pygame.image.load(str(IMG_PATH) + str('/') + '羽球背景.jpg')
 picture = pygame.transform.scale(picture, (1000, 562))
 rect = picture.get_rect()
