@@ -51,7 +51,6 @@ p2_moving_sprites.append(pygame.image.load(str(IMG_PATH / "red_run_01.png")))
 p2_moving_sprites.append(pygame.image.load(str(IMG_PATH / "red_run_02.png")))
 
 
-
 class Player(pygame.sprite.Sprite):
     def __init__(self, pos_x, pos_y, moving_sprites_list):
         super().__init__()
@@ -102,18 +101,26 @@ class Player(pygame.sprite.Sprite):
         self.rect.x -= player_speed
         if self.rect.left <= 0:
             self.rect.left = 0
-        elif self.rect.left <= x_net and self.rect.right > x_net:
-            self.rect.left = x_net
+        elif self.rect.left <= x_net + w_net and self.rect.right > x_net:
+            self.rect.left = x_net + w_net
 
     def jump(self, path): # 人物跳
         if not self.is_jumping:
-            if keys[pygame.K_w]:
-                self.is_moving_right = False
-                self.is_moving_left = False
-                self.image = pygame.image.load(str(IMG_PATH / path))
-                self.image = pygame.transform.scale(self.image, (80, 120))
-                self.is_jumping = True
-            
+            if self == p1:
+                if keys[pygame.K_w]:
+                    # self.is_moving_right = False
+                    # self.is_moving_left = False
+                    self.image = pygame.image.load(str(IMG_PATH / path))
+                    self.image = pygame.transform.scale(self.image, (80, 120))
+                    self.is_jumping = True
+            elif self == p2:
+                if keys[pygame.K_UP]:
+                    # self.is_moving_right = False
+                    # self.is_moving_left = False
+                    self.image = pygame.image.load(str(IMG_PATH / path))
+                    self.image = pygame.transform.scale(self.image, (80, 120))
+                    self.is_jumping = True
+
         else:
             self.is_moving_right = False
             self.is_moving_left = False
@@ -124,18 +131,10 @@ class Player(pygame.sprite.Sprite):
                 if self.jumpcount < 0:
                     self.jumpdirection = -1
                 self.rect.y -= (self.jumpcount ** 2) * self.jumpdirection
-                print(self.rect.y)
                 self.jumpcount -= 1
             else:
                 self.is_jumping = False
                 self.jumpcount = 10
-
-            
-            
-    # def get_player(self): # 人物生成
-    #     player_img = pygame.image.load(self.path)
-    #     player_img = pygame.transform.scale(player_img, (80, 120))
-    #     game.blit(player_img, ((self.x, self.y), (player_width, player_height)))
 
 
 class Net:
@@ -145,6 +144,7 @@ class Net:
         self.w = w
         self.h = h
         self.net_img = net_img
+
 
     def get_net(self):
         self.net_img = game.convert_alpha()  # 把中間包括背景網子的黑色長方形調為透明
@@ -190,8 +190,10 @@ while True:
         p2.move_right()
     elif keys[pygame.K_LEFT]:
         p2.move_left()
-    if keys[pygame.K_UP]: 
-        p2.jump()
+    if not p2.is_jumping:
+        p2.jump('red_6.png')
+    else:
+        p2.jump('red_6.png')
     
     pygame.display.flip()
     clock.tick(50)
