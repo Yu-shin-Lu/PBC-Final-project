@@ -95,6 +95,9 @@ def text_cele():
     font = pygame.font.Font("ARCADECLASSIC.TTF", 50)
     return font
 
+def text_button():
+    font = pygame.font.Font("ARCADECLASSIC.TTF", 50)
+    return font
 
 # p1圖片左右移動轉換
 def move(cnt, img1, img2, img3):
@@ -129,9 +132,15 @@ def return_background():
 p1_name = text_name().render('P LAYER 1', False, (255, 215, 0))
 p2_name = text_name().render('P LAYER 2', False, (255, 215, 0))
 
+welcome = text_score().render('ARE YOU READY', False, (255, 215, 0))
+button_start = text_button().render('START', False, (255, 215, 0))
+button_quit = text_button().render('QUIT', False, (255, 215, 0))
+
 p1_score = 0
 p2_score = 0
 
+enter_picture = pygame.image.load(str(IMG_PATH) + str('/') + '進入畫面.png')
+enter_picture = pygame.transform.scale(enter_picture, (1000, 562))
 
 picture = pygame.image.load(str(IMG_PATH) + str('/') + '羽球背景.jpg')
 picture = pygame.transform.scale(picture, (1000, 562))
@@ -157,6 +166,28 @@ isHit_p1 = False
 isHit_p2 = False
 
 cnt = 0
+
+start = True
+while start:  # 遊戲進入畫面操作
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+    
+    game.blit(enter_picture, (0, 5))
+    game.blit(welcome, (265, 150))
+    game.blit(button_start, (450, 265))
+    game.blit(button_quit, (462, 346))
+    
+    buttons = pygame.mouse.get_pressed()
+    x1, y1 = pygame.mouse.get_pos()
+    if x1 >= 400 and x1 <= 628 and y1 >= 262 and y1 <= 318:
+        if buttons[0]:
+            start = False
+    elif x1 >=400 and x1 <= 628 and y1 >= 343 and y1 <= 399:
+        if buttons[0]:
+            pygame.quit()
+    pygame.display.update()
+    
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
