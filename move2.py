@@ -103,47 +103,45 @@ class Player(pygame.sprite.Sprite):
             self.rect.left = x_net + w_net
 
     def jump(self, path): # 人物跳
-        if not self.is_jumping:
-            if self == p1:
-                if keys[pygame.K_w]:
-                    # self.is_moving_right = False
-                    # self.is_moving_left = False
-                    self.image = pygame.image.load(str(IMG_PATH / path))
-                    self.image = pygame.transform.scale(self.image, (80, 120))
-                    self.is_jumping = True
-            elif self == p2:
-                if keys[pygame.K_UP]:
-                    # self.is_moving_right = False
-                    # self.is_moving_left = False
-                    self.image = pygame.image.load(str(IMG_PATH / path))
-                    self.image = pygame.transform.scale(self.image, (80, 120))
-                    self.is_jumping = True
-
+        # if not self.is_jumping:
+        #     # if self == p1:
+        #     #     if keys[pygame.K_w]:
+        #     #         # self.is_moving_right = False
+        #     #         # self.is_moving_left = False
+        #     #         self.image = pygame.image.load(str(IMG_PATH / path))
+        #     #         self.image = pygame.transform.scale(self.image, (80, 120))
+        #     #         self.is_jumping = True
+        #     # elif self == p2:
+        #     #     if keys[pygame.K_UP]:
+        #     #         # self.is_moving_right = False
+        #     #         # self.is_moving_left = False
+        #     #         self.image = pygame.image.load(str(IMG_PATH / path))
+        #     #         self.image = pygame.transform.scale(self.image, (80, 120))
+        #     #         self.is_jumping = True
+        #     self.is_jumping = True
+        # else:
+        self.is_moving_right = False
+        self.is_moving_left = False
+        self.image = pygame.image.load(str(IMG_PATH / path))
+        self.image = pygame.transform.scale(self.image, (80, 120))
+        if self.jumpcount >= -10:
+            self.jumpdirection = 1
+            if self.jumpcount < 0:
+                self.jumpdirection = -1
+            self.rect.y -= (self.jumpcount ** 2) * self.jumpdirection
+            self.jumpcount -= 1
         else:
-            self.is_moving_right = False
-            self.is_moving_left = False
-            self.image = pygame.image.load(str(IMG_PATH / path))
-            self.image = pygame.transform.scale(self.image, (80, 120))
-            if self.jumpcount >= -10:
-                self.jumpdirection = 1
-                if self.jumpcount < 0:
-                    self.jumpdirection = -1
-                self.rect.y -= (self.jumpcount ** 2) * self.jumpdirection
-                self.jumpcount -= 1
-            else:
-                self.is_jumping = False
-                self.jumpcount = 10
+            self.is_jumping = False
+            self.jumpcount = 10
 
 
-class Net(pygame.sprite.Sprite):
-    def __init__(self, x, y, w, h):
-        super().__init__()
+class Net:
+    def __init__(self, x, y, w, h, net_img):
         self.x = x
         self.y = y
         self.w = w
         self.h = h
-
-        self.image = pygame.draw.rect(self.net_img, (0, 0, 0, 0), ((self.x, self.y), (self.w, self.h)))
+        self.net_img = net_img
 
 
     def get_net(self):
@@ -180,12 +178,15 @@ while True:
         p1.move_right()
     elif keys[pygame.K_a]:
         p1.move_left()
-    if not p1.is_jumping:
+    # if not p1.is_jumping:
+    #     p1.jump('blue_5.png')
+    # else:
+    #     p1.jump('blue_5.png')
+    if keys[pygame.K_w]:
+        p1.is_jumping = True
         p1.jump('blue_5.png')
-    else:
-        p1.jump('blue_5.png')
-        
-    p2_moves.draw(game)
+    print(p1.is_jumping)
+    # p2_moves.draw(game)
     if keys[pygame.K_RIGHT]:
         p2.move_right()
     elif keys[pygame.K_LEFT]:
