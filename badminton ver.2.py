@@ -366,7 +366,10 @@ while True:
     get_net()
 
     # ball
-    get_ball('去背羽球.png')
+    if vx_ball > 0:
+        get_ball('去背羽球.png')
+    else:
+        get_ball('去背羽球2.png')
     vy_ball += grav
     x_ball += vx_ball
     y_ball += vy_ball
@@ -379,7 +382,7 @@ while True:
 # 殺球(角度、速度、gravity要調整) ok
 # 開始介面 ok
 # 網子高度要調整(背景圖) ok
-# 球要有兩個方向(球頭朝對面)
+# 球要有兩個方向(球頭朝對面) ok
 # 場地線調整
 # 重新開始按鈕(Optional:暫停鍵)
 # 音效
