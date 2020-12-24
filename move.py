@@ -15,13 +15,13 @@ clock = pygame.time.Clock()
 x_shuttle = 500
 y_shuttle = 100
 r_shuttle = 10
-v_shuttle = 5
+v_shuttle = 3
 rad = pi / 180
-ang = random.choice([180, 0])
+ang = random.choice([180])
 angle = -ang * rad
 vx_shuttle = cos(angle) * v_shuttle
 vy_shuttle = sin(angle) * v_shuttle
-grav = 0.1
+grav = 0.09
 
 # net obj # 原始數值(495, 362, 10, 200)，改過的數值調成與背景網子的範圍相同
 x_net = 495
@@ -137,6 +137,37 @@ class Player(pygame.sprite.Sprite):
                 self.jumpcount = 10
 
 
+    def lift(self, shuttle): # 挑球
+        if self.rect.colliderect(shuttle):
+            shuttle.vx = cos(-10 * random.uniform(6.5, 8.0) * rad) * 9
+            shuttle.vy = sin(-10 * random.uniform(6.5, 8.0) * rad) * 10
+            shuttle.update()
+
+    def short(self, shuttle): # 小球
+        if self.rect.colliderect(shuttle):
+            shuttle.vx = cos(-10 * random.uniform(6.5, 8.0) * rad) * 7
+            shuttle.vy = sin(-10 * random.uniform(6.5, 8.0) * rad) * 8
+            shuttle.update()
+
+    def drive(self, shuttle): # 平抽
+        if self.rect.colliderect(shuttle):
+            shuttle.vx = cos(-10 * random.uniform(4.0, 4.5) * rad) * 7.0
+            shuttle.vy = sin(-10 * random.uniform(4.0, 4.5) * rad) * 7.5
+            shuttle.update()
+
+    def low_drive(self, shuttle): # 平抽(更平)
+        if self.rect.colliderect(shuttle):
+            vx_ball = cos(-10 * random.uniform(4.0, 4.5) * rad) * 6.5
+            vy_ball = sin(-10 * random.uniform(4.0, 4.5) * rad) * 5.5
+            shuttle.update()
+
+    def hit(self, shuttle): # 平抽(更平)
+        if self.rect.colliderect(shuttle):
+            vx_ball = cos(-10 * random.uniform(6.5, 7.5) * rad) * 5.5
+            vy_ball = sin(-10 * random.uniform(6.5, 7.5) * rad) * 5.5
+            shuttle.update()
+
+
 class Net(pygame.sprite.Sprite):
     def __init__(self, x, y, w, h):
         super().__init__()
@@ -157,6 +188,8 @@ class Shuttle(pygame.sprite.Sprite):
         super().__init__()
         self.x, self.y = x_shuttle, y_shuttle
         self.vx, self.vy = vx_shuttle, vy_shuttle
+        self.is_hit_by_p1 = False
+        self.is_hit_by_p2 = False
         self.moving_sprites = shuttle_moving_sprites
         self.current = 0
         self.image = self.moving_sprites[self.current]
@@ -165,6 +198,29 @@ class Shuttle(pygame.sprite.Sprite):
 
         self.rect = self.image.get_rect()
         self.rect.center = [self.x, self.y]
+
+    def dropping(self):
+        self.vy += grav
+        self.rect.x += self.vx
+        self.rect.y += self.vy
+
+    def update(self):
+        if self.is_hit_by_p1:
+            self.current += 0.3
+            if self.current >= len(self.moving_sprites):
+                self.current = 0
+                self.is_moving_right = False
+            self.image = self.moving_sprites[int(self.current)]
+            self.image = pygame.transform.scale(self.image, (80, 120))
+        elif self.is_hit_by_p2:
+            self.current -= 0.3
+            if self.current <= 0:
+                self.current = len(self.moving_sprites)
+                self.is_moving_left = False
+            self.image = self.moving_sprites[-int(self.current)] # It just works. Dunno why.
+            self.image = pygame.transform.scale(self.image, (80, 120))
+
+
 
 # music_path = MUSIC_PATH / "背景音-選項3.mp3"
 # pygame.mixer.music.load(str(music_path))
@@ -201,6 +257,18 @@ while True:
     elif keys[pygame.K_a]:
         p1.move_left()
 
+    if keys[pygame.K_z] and 0 <= p1.rect.x <= 250:
+        p1.lift(shuttle)
+    elif keys[pygame.K_z] and 250 < p1.rect.x <= 500:
+        p1.short(shuttle)
+    elif keys[pygame.K_x] and 0 <= p1.rect.x <= 250:
+        p1.drive(shuttle)
+    elif keys[pygame.K_x] and 250 < p1.rect.x <= 375:
+        p1.low_drive(shuttle)
+    elif keys[pygame.K_x] and 375 < p1.rect.x <= 500:
+        p1.hti(shuttle)
+
+
     p1.check_if_jump('blue_5.png')
     # if not p1.is_jumping:
     #     p1.jump('blue_5.png')
@@ -220,6 +288,7 @@ while True:
     #     p2.jump('red_6.png')
 
     shuttle_moves.draw(game)
+    shuttle.dropping()
     
     pygame.display.flip()
     clock.tick(50)

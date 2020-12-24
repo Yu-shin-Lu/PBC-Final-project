@@ -228,7 +228,8 @@ while True:
                     vx_ball = cos(-10 * random.uniform(6.5, 8.0) * rad) * 9
                     vy_ball = sin(-10 * random.uniform(6.5, 8.0) * rad) * 10
                     isHit_p1 = True
-                elif keys[pygame.K_z] and 250 < x_p1 <= 500:
+                # elif keys[pygame.K_z] and 250 < x_p1 <= 500:
+                elif keys[pygame.K_g]:
                     vx_ball = cos(-10 * random.uniform(6.5, 8.0) * rad) * 7
                     vy_ball = sin(-10 * random.uniform(6.5, 8.0) * rad) * 8
                     isHit_p1 = True
@@ -240,7 +241,8 @@ while True:
                     vx_ball = cos(-10 * random.uniform(4.0, 4.5) * rad) * 6.5
                     vy_ball = sin(-10 * random.uniform(4.0, 4.5) * rad) * 5.5
                     isHit_p1 = True
-                elif keys[pygame.K_x] and 375 < x_p1 <= 500:
+                # elif keys[pygame.K_x] and 375 < x_p1 <= 500:
+                elif keys[pygame.K_f]:
                     vx_ball = cos(-10 * random.uniform(6.5, 7.5) * rad) * 5.5
                     vy_ball = sin(-10 * random.uniform(6.5, 7.5) * rad) * 5.5
                     isHit_p1 = True
@@ -375,7 +377,6 @@ while True:
     vy_ball += grav
     x_ball += vx_ball
     y_ball += vy_ball
-
     pygame.display.flip()
     clock.tick(200)
 
