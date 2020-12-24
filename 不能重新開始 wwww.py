@@ -26,11 +26,7 @@ grav = 0.09
 
 
 def serve(scorer):
-    global x_ball
-    global y_ball
-    global vx_ball
-    global vy_ball
-    global angle
+    global x_ball, y_ball, vx_ball, vy_ball, angle
     sleep(0.5)
     x_ball = 500
     y_ball = 100
@@ -119,7 +115,7 @@ def jump(img1):
 def restart():
     while True:  # 遊戲進入畫面操作
         for event in pygame.event.get():
-            if evente.type == pygame.QUIT:
+            if event.type == pygame.QUIT:
                 pygame.quit()
 
         game.blit(enter_picture, (0, 5))
@@ -132,7 +128,7 @@ def restart():
         x1, y1 = pygame.mouse.get_pos()
         if x1 >= 400 and x1 <= 628 and y1 >= 262 and y1 <= 318:
             if buttons[0]:
-                playing = True
+                # playing = True
                 break
         elif x1 >=400 and x1 <= 628 and y1 >= 343 and y1 <= 399:
             if buttons[0]:
@@ -219,7 +215,7 @@ while start:  # 遊戲進入畫面操作
         if buttons[0]:
             pygame.quit()
     pygame.display.update()
-restart = False
+# restart = False
 playing = True    
 while playing:
     for event in pygame.event.get():
@@ -414,13 +410,13 @@ while playing:
     
     p1_win = False
     p2_win = False
-    if p1_score == 3:
+    if p1_score == 1:
         p1_win = True
         restart()
         game.blit(p1_win_text, (100, 300))
         p1_score = 0
         p2_score = 0
-    elif p2_score == 3:
+    elif p2_score == 1:
         p2_win = True
         restart()
         game.blit(p2_win_text, (600, 300))

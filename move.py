@@ -157,14 +157,14 @@ class Player(pygame.sprite.Sprite):
 
     def low_drive(self, shuttle): # 平抽(更平)
         if self.rect.colliderect(shuttle):
-            vx_ball = cos(-10 * random.uniform(4.0, 4.5) * rad) * 6.5
-            vy_ball = sin(-10 * random.uniform(4.0, 4.5) * rad) * 5.5
+            shuttle.vx = cos(-10 * random.uniform(4.0, 4.5) * rad) * 6.5
+            shuttle.vy = sin(-10 * random.uniform(4.0, 4.5) * rad) * 5.5
             shuttle.update()
 
     def hit(self, shuttle): # 平抽(更平)
         if self.rect.colliderect(shuttle):
-            vx_ball = cos(-10 * random.uniform(6.5, 7.5) * rad) * 5.5
-            vy_ball = sin(-10 * random.uniform(6.5, 7.5) * rad) * 5.5
+            shuttle.vx = cos(-10 * random.uniform(6.5, 7.5) * rad) * 5.5
+            shuttle.vy = sin(-10 * random.uniform(6.5, 7.5) * rad) * 5.5
             shuttle.update()
 
 
@@ -193,7 +193,6 @@ class Shuttle(pygame.sprite.Sprite):
         self.moving_sprites = shuttle_moving_sprites
         self.current = 0
         self.image = self.moving_sprites[self.current]
-        self.image = pygame.transform.scale(self.image, (80, 120))
         self.image = pygame.transform.scale(self.image, (40, 40))
 
         self.rect = self.image.get_rect()
@@ -206,19 +205,19 @@ class Shuttle(pygame.sprite.Sprite):
 
     def update(self):
         if self.is_hit_by_p1:
-            self.current += 0.3
+            self.current += 1
             if self.current >= len(self.moving_sprites):
                 self.current = 0
                 self.is_moving_right = False
             self.image = self.moving_sprites[int(self.current)]
-            self.image = pygame.transform.scale(self.image, (80, 120))
+            self.image = pygame.transform.scale(self.image, (40, 40))
         elif self.is_hit_by_p2:
-            self.current -= 0.3
+            self.current -= 1
             if self.current <= 0:
                 self.current = len(self.moving_sprites)
                 self.is_moving_left = False
             self.image = self.moving_sprites[-int(self.current)] # It just works. Dunno why.
-            self.image = pygame.transform.scale(self.image, (80, 120))
+            self.image = pygame.transform.scale(self.image, (40, 40))
 
 
 
@@ -259,14 +258,19 @@ while True:
 
     if keys[pygame.K_z] and 0 <= p1.rect.x <= 250:
         p1.lift(shuttle)
+        shuttle.is_hit_by_p1 = True
     elif keys[pygame.K_z] and 250 < p1.rect.x <= 500:
         p1.short(shuttle)
+        shuttle.is_hit_by_p1 = True
     elif keys[pygame.K_x] and 0 <= p1.rect.x <= 250:
         p1.drive(shuttle)
+        shuttle.is_hit_by_p1 = True
     elif keys[pygame.K_x] and 250 < p1.rect.x <= 375:
         p1.low_drive(shuttle)
+        shuttle.is_hit_by_p1 = True
     elif keys[pygame.K_x] and 375 < p1.rect.x <= 500:
-        p1.hti(shuttle)
+        p1.hit(shuttle)
+        shuttle.is_hit_by_p1 = True
 
 
     p1.check_if_jump('blue_5.png')
@@ -281,6 +285,21 @@ while True:
     elif keys[pygame.K_LEFT]:
         p2.move_left()
 
+    if keys[pygame.K_k] and 0 <= p2.rect.x <= 250:
+        p2.lift(shuttle)
+        shuttle.is_hit_by_p2 = True
+    elif keys[pygame.K_k] and 250 < p2.rect.x <= 500:
+        p2.short(shuttle)
+        shuttle.is_hit_by_p2 = True
+    elif keys[pygame.K_l] and 0 <= p2.rect.x <= 250:
+        p2.drive(shuttle)
+        shuttle.is_hit_by_p2 = True
+    elif keys[pygame.K_l] and 250 < p2.rect.x <= 375:
+        p2.low_drive(shuttle)
+        shuttle.is_hit_by_p2 = True
+    elif keys[pygame.K_l] and 375 < p2.rect.x <= 500:
+        p2.hit(shuttle)
+        shuttle.is_hit_by_p2 = True
     p2.check_if_jump('red_6.png')
     # if not p2.is_jumping:
     #     p2.jump()
