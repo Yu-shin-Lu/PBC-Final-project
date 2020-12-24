@@ -172,8 +172,10 @@ while start:  # 遊戲進入畫面操作
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
-    
+
     game.blit(enter_picture, (0, 5))
+    game.blit(text_score().render(str(0), False, (255, 215, 0)), (390, 60))
+    game.blit(text_score().render(str(0), False, (255, 215, 0)), (550, 60))
     game.blit(welcome, (265, 150))
     game.blit(button_start, (450, 265))
     game.blit(button_quit, (462, 346))
@@ -369,7 +371,7 @@ while True:
     if vx_ball > 0:
         get_ball('去背羽球.png')
     else:
-        get_ball('去背羽球2.png')
+        get_ball('去背羽球_球頭向左.png')
     vy_ball += grav
     x_ball += vx_ball
     y_ball += vy_ball

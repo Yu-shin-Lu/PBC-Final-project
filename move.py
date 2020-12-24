@@ -11,16 +11,16 @@ game = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption("羽球高高手")
 clock = pygame.time.Clock()
 
-# ball obj
-x_ball = 500
-y_ball = 100
-r_ball = 10
-v_ball = 5
+# shuttle obj
+x_shuttle = 500
+y_shuttle = 100
+r_shuttle = 10
+v_shuttle = 5
 rad = pi / 180
 ang = random.choice([180, 0])
 angle = -ang * rad
-vx_ball = cos(angle) * v_ball
-vy_ball = sin(angle) * v_ball
+vx_shuttle = cos(angle) * v_shuttle
+vy_shuttle = sin(angle) * v_shuttle
 grav = 0.1
 
 # net obj # 原始數值(495, 362, 10, 200)，改過的數值調成與背景網子的範圍相同
@@ -49,6 +49,12 @@ p2_moving_sprites = [] # 跟p1方向相反
 p2_moving_sprites.append(pygame.image.load(str(IMG_PATH / "red_2.png")))
 p2_moving_sprites.append(pygame.image.load(str(IMG_PATH / "red_run_01.png")))
 p2_moving_sprites.append(pygame.image.load(str(IMG_PATH / "red_run_02.png")))
+
+shuttle_moving_sprites = []
+shuttle_moving_sprites.append(pygame.image.load(str(IMG_PATH / "去背羽球_球頭向右下.png")))
+shuttle_moving_sprites.append(pygame.image.load(str(IMG_PATH / "去背羽球_球頭向左上.png")))
+shuttle_moving_sprites.append(pygame.image.load(str(IMG_PATH / "去背羽球_球頭向左下.png")))
+shuttle_moving_sprites.append(pygame.image.load(str(IMG_PATH / "去背羽球_球頭向右上.png")))
 
 
 class Player(pygame.sprite.Sprite):
@@ -102,19 +108,15 @@ class Player(pygame.sprite.Sprite):
         elif self.rect.left <= x_net + w_net and self.rect.right > x_net:
             self.rect.left = x_net + w_net
 
-    def jump(self, path): # 人物跳
+    def check_if_jump(self, path): # 人物跳
         if not self.is_jumping:
             if self == p1:
                 if keys[pygame.K_w]:
-                    # self.is_moving_right = False
-                    # self.is_moving_left = False
                     self.image = pygame.image.load(str(IMG_PATH / path))
                     self.image = pygame.transform.scale(self.image, (80, 120))
                     self.is_jumping = True
             elif self == p2:
                 if keys[pygame.K_UP]:
-                    # self.is_moving_right = False
-                    # self.is_moving_left = False
                     self.image = pygame.image.load(str(IMG_PATH / path))
                     self.image = pygame.transform.scale(self.image, (80, 120))
                     self.is_jumping = True
@@ -150,9 +152,23 @@ class Net(pygame.sprite.Sprite):
         self.net_img = game.convert_alpha()  # 把中間包括背景網子的黑色長方形調為透明
         pygame.draw.rect(self.net_img, (0, 0, 0, 0), ((self.x, self.y), (self.w, self.h)))
 
-music_path = MUSIC_PATH / "背景音-選項3.mp3"
-pygame.mixer.music.load(str(music_path))
-pygame.mixer.music.play(loops = 0, start = 0.0)
+class Shuttle(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+        self.x, self.y = x_shuttle, y_shuttle
+        self.vx, self.vy = vx_shuttle, vy_shuttle
+        self.moving_sprites = shuttle_moving_sprites
+        self.current = 0
+        self.image = self.moving_sprites[self.current]
+        self.image = pygame.transform.scale(self.image, (80, 120))
+        self.image = pygame.transform.scale(self.image, (40, 40))
+
+        self.rect = self.image.get_rect()
+        self.rect.center = [self.x, self.y]
+
+# music_path = MUSIC_PATH / "背景音-選項3.mp3"
+# pygame.mixer.music.load(str(music_path))
+# pygame.mixer.music.play(loops = 0, start = 0.0)
 
 picture = pygame.image.load(str(IMG_PATH) + str('/') + '羽球背景.jpg')
 picture = pygame.transform.scale(picture, (1000, 562))
@@ -167,6 +183,10 @@ p2_moves = pygame.sprite.Group()
 p2 = Player(800, 412, p2_moving_sprites)
 p2_moves.add(p2)
 
+shuttle_moves = pygame.sprite.Group()
+shuttle = Shuttle()
+shuttle_moves.add(shuttle)
+
 while True:
     keys = pygame.key.get_pressed()
     for event in pygame.event.get():
@@ -180,20 +200,26 @@ while True:
         p1.move_right()
     elif keys[pygame.K_a]:
         p1.move_left()
-    if not p1.is_jumping:
-        p1.jump('blue_5.png')
-    else:
-        p1.jump('blue_5.png')
+
+    p1.check_if_jump('blue_5.png')
+    # if not p1.is_jumping:
+    #     p1.jump('blue_5.png')
+    # else:
+    #     p1.jump('blue_5.png')
         
     p2_moves.draw(game)
     if keys[pygame.K_RIGHT]:
         p2.move_right()
     elif keys[pygame.K_LEFT]:
         p2.move_left()
-    if not p2.is_jumping:
-        p2.jump('red_6.png')
-    else:
-        p2.jump('red_6.png')
+
+    p2.check_if_jump('red_6.png')
+    # if not p2.is_jumping:
+    #     p2.jump()
+    # else:
+    #     p2.jump('red_6.png')
+
+    shuttle_moves.draw(game)
     
     pygame.display.flip()
     clock.tick(50)
