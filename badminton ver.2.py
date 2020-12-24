@@ -54,14 +54,6 @@ w_p1 = 50
 h_p1 = 150
 v_p1 = 5
 
-
-def get_p(img_name, x, y, w, h):
-    path = IMG_PATH / img_name
-    p1 = pygame.image.load(str(path))
-    p1 = pygame.transform.scale(p1, (80, 120))
-    game.blit(p1, ((x, y), (w, h)))
-
-
 # p2 obj
 x_p2 = 800
 y_p2 = 412
@@ -75,6 +67,12 @@ y_net = 315
 w_net = 43
 h_net = 400
 
+
+def get_p(img_name, x, y, w, h):
+    path = IMG_PATH / img_name
+    p1 = pygame.image.load(str(path))
+    p1 = pygame.transform.scale(p1, (80, 120))
+    game.blit(p1, ((x, y), (w, h)))
 
 def get_net():
     game1 = game.convert_alpha()  # 把中間包括背景網子的黑色長方形調為透明
@@ -100,21 +98,21 @@ def text_button():
     return font
 
 # p1圖片左右移動轉換
-def move(cnt, img1, img2, img3):
+def move(cnt, img1, img2, img3, x, y, w, h):
     if (cnt // 6) % 3 == 0:
-        get_p(img1, x_p1, y_p1, w_p1, h_p1)
+        get_p(img1, x, y, w, h)
         cnt += 1
     elif (cnt // 6) % 3 == 1:
-        get_p(img2, x_p1, y_p1, w_p1, h_p1)
+        get_p(img2, x, y, w, h)
         cnt += 1
     else:
-        get_p(img3, x_p1, y_p1, w_p1, h_p1)
+        get_p(img3, x, y, w, h)
         cnt += 1
     return cnt
 
-
-def jump(img1):
-    get_p(img1, x_p1, y_p1, w_p1, h_p1)
+# 跳起來
+def jump(img1, x, y, w, h):
+    get_p(img1, x, y, w, h)
 
 
 # 解除殘影
@@ -165,8 +163,8 @@ IDEN = 20  # 擊球判定
 isHit_p1 = False
 isHit_p2 = False
 
-cnt = 0
-
+cnt1 = 0
+cnt2 = 0
 start = True
 while start:  # 遊戲進入畫面操作
     for event in pygame.event.get():
@@ -313,24 +311,24 @@ while True:
     if keys[pygame.K_a]:
         return_background()
         x_p1 -= v_p1
-        cnt = move(cnt, "blue_4.png", "blue_run_01.png", "blue_run_02.png")
+        cnt1 = move(cnt1, "blue_4.png", "blue_run_01.png", "blue_run_02.png", x_p1, y_p1, w_p1, h_p1)
         if x_p1 <= 0:
             x_p1 = 0
     elif keys[pygame.K_d]:
         return_background()
         x_p1 += v_p1
-        cnt = move(cnt, "blue_4.png", "blue_run_01.png", "blue_run_02.png")
+        cnt1 = move(cnt1, "blue_4.png", "blue_run_01.png", "blue_run_02.png", x_p1, y_p1, w_p1, h_p1)
         if x_p1 + w_p1 >= 495:
             x_p1 = 495 - w_p1
 
     if not isJump_p1:
         if keys[pygame.K_w]:
             return_background()
-            jump('blue_5.png')
+            jump('blue_5.png', x_p1, y_p1, w_p1, h_p1)
             isJump_p1 = True
     else:
         return_background()
-        jump('blue_5.png')
+        jump('blue_5.png', x_p1, y_p1, w_p1, h_p1)
         if jumpCount_p1 >= -10:
             neg_p1 = 1
             if jumpCount_p1 < 0:
@@ -344,18 +342,30 @@ while True:
     # p2 movement
     get_p("red_2.png", x_p2, y_p2, w_p2, h_p2)
     if keys[pygame.K_LEFT]:
+        return_background()
+        get_p("blue_4.png", x_p1, y_p1, w_p1, h_p1)
         x_p2 -= v_p2
+        cnt2 = move(cnt2, "red_2.png", "red_run_01.png", "red_run_02.png", x_p2, y_p2, w_p2, h_p2)
         if x_p2 <= 495 + w_net:
             x_p2 = 495 + w_net
     elif keys[pygame.K_RIGHT]:
+        return_background()
+        get_p("blue_4.png", x_p1, y_p1, w_p1, h_p1)
         x_p2 += v_p2
+        cnt2 = move(cnt2, "red_2.png", "red_run_01.png", "red_run_02.png", x_p2, y_p2, w_p2, h_p2)
         if x_p2 + w_p2 >= 1000:
             x_p2 = 1000 - w_p2
 
     if not isJump_p2:
         if keys[pygame.K_UP]:
+            return_background()
+            get_p("blue_4.png", x_p1, y_p1, w_p1, h_p1)
+            jump('red_6.png', x_p2, y_p2, w_p2, h_p2)
             isJump_p2 = True
     else:
+        return_background()
+        get_p("blue_4.png", x_p1, y_p1, w_p1, h_p1)
+        jump('red_6.png', x_p2, y_p2, w_p2, h_p2)
         if jumpCount_p2 >= -10:
             neg_p2 = 1
             if jumpCount_p2 < 0:
@@ -389,4 +399,4 @@ while True:
 # 場地線調整
 # 重新開始按鈕(Optional:暫停鍵)
 # 音效
-# P2的人物動作合併
+# P2的人物動作合併 ok
