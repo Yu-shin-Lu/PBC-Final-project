@@ -148,7 +148,16 @@ rect = rect.move((0, 0))
 # 背景音效
 music_path = MUSIC_PATH / "背景音-選項3.mp3"
 pygame.mixer.music.load(str(music_path))
+pygame.mixer.music.set_volume(0.2)
 pygame.mixer.music.play(loops = 0, start = 0.0)
+
+# 擊球音效
+hit_ball_voice = pygame.mixer.Sound(str(MUSIC_PATH) + str('/') + '打擊聲-1.mp3')
+hit_ball_voice.set_volume(0.25)
+
+# 殺球音效
+kill_ball_voice = pygame.mixer.Sound(str(MUSIC_PATH) + str('/') + '打擊聲-2.mp3')
+kill_ball_voice.set_volume(0.25)
 
 p1_win_text = text_cele().render('P LAYER 1 WINS!', False, (255, 215, 0))
 p2_win_text = text_cele().render('P LAYER 2 WINS!', False, (255, 215, 0))
@@ -225,30 +234,34 @@ while True:
                 if keys[pygame.K_z] and 0 <= x_p1 <= 250:
                     vx_ball = cos(-10 * random.uniform(6.5, 8.0) * rad) * 9
                     vy_ball = sin(-10 * random.uniform(6.5, 8.0) * rad) * 10
+                    pygame.mixer.Sound.play(hit_ball_voice)
                     isHit_p1 = True
-                # elif keys[pygame.K_z] and 250 < x_p1 <= 500:
-                elif keys[pygame.K_g]:
+                elif keys[pygame.K_z] and 250 < x_p1 <= 500:
                     vx_ball = cos(-10 * random.uniform(6.5, 8.0) * rad) * 7
                     vy_ball = sin(-10 * random.uniform(6.5, 8.0) * rad) * 8
+                    pygame.mixer.Sound.play(hit_ball_voice)
                     isHit_p1 = True
                 elif keys[pygame.K_x] and 0 <= x_p1 <= 250:
                     vx_ball = cos(-10 * random.uniform(4.0, 4.5) * rad) * 7.0
                     vy_ball = sin(-10 * random.uniform(4.0, 4.5) * rad) * 7.5
+                    pygame.mixer.Sound.play(hit_ball_voice)
                     isHit_p1 = True
                 elif keys[pygame.K_x] and 250 < x_p1 <= 375:
                     vx_ball = cos(-10 * random.uniform(4.0, 4.5) * rad) * 6.5
                     vy_ball = sin(-10 * random.uniform(4.0, 4.5) * rad) * 5.5
+                    pygame.mixer.Sound.play(hit_ball_voice)
                     isHit_p1 = True
-                # elif keys[pygame.K_x] and 375 < x_p1 <= 500:
-                elif keys[pygame.K_f]:
+                elif keys[pygame.K_x] and 375 < x_p1 <= 500:
                     vx_ball = cos(-10 * random.uniform(6.5, 7.5) * rad) * 5.5
                     vy_ball = sin(-10 * random.uniform(6.5, 7.5) * rad) * 5.5
+                    pygame.mixer.Sound.play(hit_ball_voice)
                     isHit_p1 = True
         else:
             if x_p1 - IDEN < x_ball < x_p1 + w_p1 + IDEN and y_ball < 400:
                 if keys[pygame.K_c]:
                     vx_ball = cos(10 * random.uniform(3.5, 5.0) * rad) * 35
                     vy_ball = sin(10 * random.uniform(3.5, 5.0) * rad) * 25
+                    pygame.mixer.Sound.play(kill_ball_voice)
                     isHit_p1 = True
     else:
         if x_ball >= 500 or y_ball >= 562 or (x_net < x_ball < x_net + w_net and y_net < y_ball <= y_net + h_net):
@@ -261,28 +274,34 @@ while True:
                 if keys[pygame.K_l] and 500 <= x_p2 <= 625:
                     vx_ball = cos(-10 * random.uniform(10.5, 11.5) * rad) * 5.5
                     vy_ball = sin(-10 * random.uniform(10.5, 11.5) * rad) * 5.5
+                    pygame.mixer.Sound.play(hit_ball_voice)
                     isHit_p2 = True
                 elif keys[pygame.K_l] and 625 < x_p2 <= 750:
                     vx_ball = cos(-10 * random.uniform(11.5, 12.0) * rad) * 6.5
                     vy_ball = sin(-10 * random.uniform(11.5, 12.0) * rad) * 5.5
+                    pygame.mixer.Sound.play(hit_ball_voice)
                     isHit_p2 = True
                 elif keys[pygame.K_l] and 750 < x_p2 <= 1000:
                     vx_ball = cos(-10 * random.uniform(13.0, 13.5) * rad) * 7.0
                     vy_ball = sin(-10 * random.uniform(13.0, 13.5) * rad) * 7.5
+                    pygame.mixer.Sound.play(hit_ball_voice)
                     isHit_p2 = True
                 elif keys[pygame.K_k] and 500 <= x_p2 <= 750:
                     vx_ball = cos(-10 * random.uniform(10.0, 11.5) * rad) * 7 # 11.5 13.5
                     vy_ball = sin(-10 * random.uniform(10.0, 11.5) * rad) * 8
+                    pygame.mixer.Sound.play(hit_ball_voice)
                     isHit_p2 = True
                 elif keys[pygame.K_k] and 750 < x_p2 <= 1000:
                     vx_ball = cos(-10 * random.uniform(10.0, 11.5) * rad) * 9
                     vy_ball = sin(-10 * random.uniform(10.0, 11.5) * rad) * 10
+                    pygame.mixer.Sound.play(hit_ball_voice)
                     isHit_p2 = True
         else:
             if x_p2 - IDEN < x_ball < x_p2 + w_p2 + IDEN and y_ball < 400:
                 if keys[pygame.K_SEMICOLON]:
                     vx_ball = cos(-10 * random.uniform(21.5, 23.0) * rad) * 35
                     vy_ball = sin(-10 * random.uniform(21.5, 23.0) * rad) * 25
+                    pygame.mixer.Sound.play(kill_ball_voice)
                     isHit_p2 = True
     else:
         if x_ball <= 500 or y_ball >= 562 or (x_net < x_ball < x_net + w_net and y_net < y_ball <= y_net + h_net):
@@ -398,5 +417,5 @@ while True:
 # 球要有兩個方向(球頭朝對面) ok
 # 場地線調整
 # 重新開始按鈕(Optional:暫停鍵)
-# 音效
+# 音效(剩下觀眾歡呼聲)
 # P2的人物動作合併 ok
