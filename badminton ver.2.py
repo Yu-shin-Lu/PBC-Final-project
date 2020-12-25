@@ -28,10 +28,10 @@ vy_ball = sin(angle) * v_ball
 grav = 0.09
 
 
-# 若有人得分則程式暫停執行0.5秒，球回到發球位置
+# 若有人得分則程式暫停執行1.0秒，球回到發球位置
 def serve(scorer):
     global x_ball, y_ball, vx_ball, vy_ball, angle
-    sleep(0.5)
+    sleep(1.0)
     x_ball = 500
     y_ball = 100
     angle = -0 * rad if scorer == 1 else -180 * rad
@@ -414,10 +414,10 @@ while True:
         return_background()
         jump('blue_5.png', x_p1, y_p1, w_p1, h_p1)
         if jumpCount_p1 >= -10:
-            neg_p1 = 1
+            neg_p1 = 0.5
             if jumpCount_p1 < 0:
-                neg_p1 = -1
-            y_p1 -= (jumpCount_p1 ** 2) * neg_p1 * 0.4
+                neg_p1 = -0.5
+            y_p1 -= (jumpCount_p1 ** 2) * neg_p1 * 0.6
             jumpCount_p1 -= 0.5
         else:
             isJump_p1 = False
@@ -451,10 +451,10 @@ while True:
         get_p("blue_4.png", x_p1, y_p1, w_p1, h_p1)
         jump('red_6.png', x_p2, y_p2, w_p2, h_p2)
         if jumpCount_p2 >= -10:
-            neg_p2 = 1
+            neg_p2 = 0.5
             if jumpCount_p2 < 0:
-                neg_p2 = -1
-            y_p2 -= (jumpCount_p2 ** 2) * neg_p2 * 0.4  # 用參數調整起跳與落地速度
+                neg_p2 = -0.5
+            y_p2 -= (jumpCount_p2 ** 2) * neg_p2 * 0.6  # 用參數調整起跳與落地速度
             jumpCount_p2 -= 0.5
         else:
             isJump_p2 = False
