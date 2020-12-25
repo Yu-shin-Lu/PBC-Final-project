@@ -136,7 +136,7 @@ def return_background():
 
 def restart_game(whowin):
     restart = True
-    while restart:  # 遊戲進入畫面操作
+    while restart:  # 分數達到後是否重來或是退出
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -227,7 +227,7 @@ cnt1 = 0
 cnt2 = 0
 start = True
 
-# 遊戲進入畫面操作
+# 是否開始遊戲
 while start:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
