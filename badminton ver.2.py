@@ -126,13 +126,43 @@ def return_background():
         game.blit(p1_win_text, (200, 300))
     elif p2_win and not p1_win:
         game.blit(p2_win_text, (700, 300))
+        
+def restart(whowin):
+    restart = True
+    while restart:  # 遊戲進入畫面操作
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+        game.blit(enter_picture, (0, 5))
+        game.blit(text_score().render(str(p1_score), False, (255, 215, 0)), (390, 60))
+        game.blit(text_score().render(str(p2_score), False, (255, 215, 0)), (550, 60))
+        if whowin == p1_win:
+            game.blit(p1_win_text, (100, 300))
+            get_p("blue_5.png", x_p1, y_p1, w_p1, h_p1)
+        else:
+            game.blit(p2_win_text, (600, 300))
+            get_p("red_6.png", x_p2, y_p2, w_p2, h_p2)
+        game.blit(play_again, (300, 150))
+        game.blit(button_play, (455, 265))
+        game.blit(button_quit, (462, 346))   
+        buttons = pygame.mouse.get_pressed()
+        x1, y1 = pygame.mouse.get_pos()
+        if x1 >= 400 and x1 <= 628 and y1 >= 262 and y1 <= 318:
+            if buttons[0]:
+                restart = False
+        elif x1 >=400 and x1 <= 628 and y1 >= 343 and y1 <= 399:
+            if buttons[0]:
+                pygame.quit()
+        pygame.display.update()
 
 p1_name = text_name().render('P LAYER 1', False, (255, 215, 0))
 p2_name = text_name().render('P LAYER 2', False, (255, 215, 0))
 
 welcome = text_score().render('ARE YOU READY', False, (255, 215, 0))
+play_again = text_score().render('Play Again', False, (255, 215, 0))
 button_start = text_button().render('START', False, (255, 215, 0))
 button_quit = text_button().render('QUIT', False, (255, 215, 0))
+button_play = text_button().render('Play', False, (255, 215, 0))
 
 p1_score = 0
 p2_score = 0
@@ -159,6 +189,10 @@ hit_ball_voice.set_volume(0.25)
 kill_ball_voice = pygame.mixer.Sound(str(MUSIC_PATH) + str('/') + '打擊聲-2.mp3')
 kill_ball_voice.set_volume(0.25)
 
+# 歡呼聲
+win_voice = pygame.mixer.Sound(str(MUSIC_PATH) + str('/') + '觀眾掌聲歡呼聲.mp3')
+win_voice.set_volume(0.25)
+
 p1_win_text = text_cele().render('P LAYER 1 WINS!', False, (255, 215, 0))
 p2_win_text = text_cele().render('P LAYER 2 WINS!', False, (255, 215, 0))
 
@@ -175,7 +209,9 @@ isHit_p2 = False
 cnt1 = 0
 cnt2 = 0
 start = True
-while start:  # 遊戲進入畫面操作
+
+# 遊戲進入畫面操作
+while start:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -186,7 +222,6 @@ while start:  # 遊戲進入畫面操作
     game.blit(welcome, (265, 150))
     game.blit(button_start, (450, 265))
     game.blit(button_quit, (462, 346))
-    
     buttons = pygame.mouse.get_pressed()
     x1, y1 = pygame.mouse.get_pos()
     if x1 >= 400 and x1 <= 628 and y1 >= 262 and y1 <= 318:
@@ -196,7 +231,8 @@ while start:  # 遊戲進入畫面操作
         if buttons[0]:
             pygame.quit()
     pygame.display.update()
-    
+
+# 進入遊戲   
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -216,13 +252,17 @@ while True:
     # 慶祝訊息
     p1_win = False
     p2_win = False
-    if p1_score == 3:
+    if p1_score == 11:
         p1_win = True
-        game.blit(p1_win_text, (100, 300))
-    elif p2_score == 3:
+        restart(p1_win)
+        p1_score = 0
+        p2_score = 0
+    elif p2_score == 11:
         p2_win = True
-        game.blit(p2_win_text, (600, 300))
-
+        restart(p2_win)
+        p1_score = 0
+        p2_score = 0
+        
     keys = pygame.key.get_pressed()
     if keys[pygame.K_ESCAPE]:
         pygame.quit()
@@ -415,7 +455,7 @@ while True:
 # 開始介面 ok
 # 網子高度要調整(背景圖) ok
 # 球要有兩個方向(球頭朝對面) ok
-# 場地線調整
-# 重新開始按鈕(Optional:暫停鍵)
+# 場地線調整 ok
+# 重新開始按鈕(Optional:暫停鍵) ok
 # 音效(剩下觀眾歡呼聲)
 # P2的人物動作合併 ok
