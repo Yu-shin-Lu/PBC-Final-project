@@ -1,14 +1,17 @@
-import pygame
-from math import sin, cos, pi
 import random
-from time import sleep
+from math import sin, cos, pi
 from pathlib import Path
+from time import sleep
 
-pygame.init()
-game = pygame.display.set_mode((1000, 562))
-pygame.display.set_caption("羽球高高手")
-clock = pygame.time.Clock()
+import pygame
+import sys
 
+pygame.init()  # pygame 初始化
+game = pygame.display.set_mode((1000, 562))  # 創造視窗
+pygame.display.set_caption("羽球高高手")  # 設定視窗名稱
+clock = pygame.time.Clock()  # 設定一個時鐘以追蹤時間
+
+# 讀取圖檔、音效檔
 IMG_PATH = Path(__file__).resolve().parent / '圖檔'
 MUSIC_PATH = Path(__file__).resolve().parent / '音效'
 
@@ -18,19 +21,16 @@ y_ball = 100
 r_ball = 10
 v_ball = 3
 rad = pi / 180
-ang = random.choice([180, 0])
+ang = random.choice([180, 0])  # 第一次發球方隨機選擇
 angle = -ang * rad
 vx_ball = cos(angle) * v_ball
 vy_ball = sin(angle) * v_ball
 grav = 0.09
 
 
+# 若有人得分則程式暫停執行0.5秒，球回到發球位置
 def serve(scorer):
-    global x_ball
-    global y_ball
-    global vx_ball
-    global vy_ball
-    global angle
+    global x_ball, y_ball, vx_ball, vy_ball, angle
     sleep(0.5)
     x_ball = 500
     y_ball = 100
@@ -39,8 +39,8 @@ def serve(scorer):
     vy_ball = sin(angle) * v_ball
 
 
+# 讀取球的函數
 def get_ball(img_name):
-    # pygame.draw.circle(game, (0, 255, 0), (int(float(x_ball)), int(float(y_ball))), r_ball, 0)
     path = IMG_PATH / img_name
     ball = pygame.image.load(str(path))
     ball = pygame.transform.scale(ball, (40, 40))
@@ -74,6 +74,7 @@ def get_p(img_name, x, y, w, h):
     p1 = pygame.transform.scale(p1, (80, 120))
     game.blit(p1, ((x, y), (w, h)))
 
+
 def get_net():
     game1 = game.convert_alpha()  # 把中間包括背景網子的黑色長方形調為透明
     pygame.draw.rect(game1, (0, 0, 0, 0), ((x_net, y_net), (w_net, h_net)))
@@ -84,18 +85,22 @@ def text_score():
     font = pygame.font.Font("ARCADECLASSIC.TTF", 80)
     return font
 
+
 def text_name():
     pygame.font.init()
     font1 = pygame.font.Font("ARCADECLASSIC.TTF", 30)
     return font1
 
+
 def text_cele():
     font = pygame.font.Font("ARCADECLASSIC.TTF", 50)
     return font
 
+
 def text_button():
     font = pygame.font.Font("ARCADECLASSIC.TTF", 50)
     return font
+
 
 # p1圖片左右移動轉換
 def move(cnt, img1, img2, img3, x, y, w, h):
@@ -109,6 +114,7 @@ def move(cnt, img1, img2, img3, x, y, w, h):
         get_p(img3, x, y, w, h)
         cnt += 1
     return cnt
+
 
 # 跳起來
 def jump(img1, x, y, w, h):
@@ -126,13 +132,15 @@ def return_background():
         game.blit(p1_win_text, (200, 300))
     elif p2_win and not p1_win:
         game.blit(p2_win_text, (700, 300))
-        
-def restart(whowin):
+
+
+def restart_game(whowin):
     restart = True
     while restart:  # 遊戲進入畫面操作
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
+                sys.exit()
         game.blit(enter_picture, (0, 5))
         game.blit(text_score().render(str(p1_score), False, (255, 215, 0)), (390, 60))
         game.blit(text_score().render(str(p2_score), False, (255, 215, 0)), (550, 60))
@@ -144,19 +152,21 @@ def restart(whowin):
             get_p("red_6.png", x_p2, y_p2, w_p2, h_p2)
         game.blit(play_again, (310, 150))
         game.blit(button_play, (420, 265))
-        game.blit(button_quit, (462, 346))   
+        game.blit(button_quit, (462, 346))
         buttons = pygame.mouse.get_pressed()
-        x1, y1 = pygame.mouse.get_pos()
-        if x1 >= 400 and x1 <= 628 and y1 >= 262 and y1 <= 318:
+        mouse_x, mouse_y = pygame.mouse.get_pos()
+        if 400 <= mouse_x <= 628 and 262 <= mouse_y <= 318:
             if buttons[0]:
                 pygame.mixer.Sound.play(click_voice)
                 restart = False
-        elif x1 >=400 and x1 <= 628 and y1 >= 343 and y1 <= 399:
+        elif 400 <= mouse_x <= 628 and 343 <= mouse_y <= 399:
             if buttons[0]:
                 pygame.mixer.Sound.play(click_voice)
                 sleep(0.5)
                 pygame.quit()
+                sys.exit()
         pygame.display.update()
+
 
 p1_name = text_name().render('P LAYER 1', False, (255, 215, 0))
 p2_name = text_name().render('P LAYER 2', False, (255, 215, 0))
@@ -182,7 +192,7 @@ rect = rect.move((0, 0))
 music_path = MUSIC_PATH / "背景音-選項3.mp3"
 pygame.mixer.music.load(str(music_path))
 pygame.mixer.music.set_volume(0.2)
-pygame.mixer.music.play(loops = 0, start = 0.0)
+pygame.mixer.music.play(loops=0, start=0.0)
 
 # 擊球音效
 hit_ball_voice = pygame.mixer.Sound(str(MUSIC_PATH) + str('/') + '打擊聲-1.mp3')
@@ -222,6 +232,7 @@ while start:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
+            sys.exit()
 
     game.blit(enter_picture, (0, 5))
     game.blit(text_score().render(str(0), False, (255, 215, 0)), (390, 60))
@@ -230,16 +241,17 @@ while start:
     game.blit(button_start, (450, 265))
     game.blit(button_quit, (462, 346))
     buttons = pygame.mouse.get_pressed()
-    x1, y1 = pygame.mouse.get_pos()
-    if x1 >= 400 and x1 <= 628 and y1 >= 262 and y1 <= 318:
+    mouse_x, mouse_y = pygame.mouse.get_pos()
+    if 400 <= mouse_x <= 628 and 262 <= mouse_y <= 318:
         if buttons[0]:
             pygame.mixer.Sound.play(click_voice)
             start = False
-    elif x1 >=400 and x1 <= 628 and y1 >= 343 and y1 <= 399:
+    elif 400 <= mouse_x <= 628 and 343 <= mouse_y <= 399:
         if buttons[0]:
             pygame.mixer.Sound.play(click_voice)
             sleep(0.5)
             pygame.quit()
+            sys.exit()
     pygame.display.update()
 
 # 進入遊戲   
@@ -247,6 +259,7 @@ while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
+            sys.exit()
 
     game.blit(picture, rect)
 
@@ -262,23 +275,23 @@ while True:
     # 慶祝訊息
     p1_win = False
     p2_win = False
-    if p1_score == 11:
+    if p1_score == 3:
         pygame.mixer.Sound.play(win_voice)
         p1_win = True
-        restart(p1_win)
+        restart_game(p1_win)
         p1_score = 0
         p2_score = 0
-    elif p2_score == 11:
+    elif p2_score == 3:
         pygame.mixer.Sound.play(win_voice)
         p2_win = True
-        restart(p2_win)
+        restart_game(p2_win)
         p1_score = 0
         p2_score = 0
-        
+
     keys = pygame.key.get_pressed()
     if keys[pygame.K_ESCAPE]:
         pygame.quit()
-
+        sys.exit()
     # p1擊球判定
     if not isHit_p1:
         if not isJump_p1:
@@ -339,7 +352,7 @@ while True:
                     pygame.mixer.Sound.play(hit_ball_voice)
                     isHit_p2 = True
                 elif keys[pygame.K_k] and 500 <= x_p2 <= 750:
-                    vx_ball = cos(-10 * random.uniform(10.0, 11.5) * rad) * 7 # 11.5 13.5
+                    vx_ball = cos(-10 * random.uniform(10.0, 11.5) * rad) * 7  # 11.5 13.5
                     vy_ball = sin(-10 * random.uniform(10.0, 11.5) * rad) * 8
                     pygame.mixer.Sound.play(hit_ball_voice)
                     isHit_p2 = True
@@ -363,7 +376,7 @@ while True:
     if x_net < x_ball < x_net + w_net and y_net < y_ball <= y_net + h_net:
         if vx_ball > 0:
             p2_score += 1
-            serve(2) # 2
+            serve(2)  # 2
         else:
             p1_score += 1
             serve(1)
@@ -372,7 +385,7 @@ while True:
     if y_ball > 562 or x_ball > 1000 or x_ball < 0:
         if (0 < x_ball < x_net and y_ball > 562) or (x_ball > 1000):
             p2_score += 1
-            serve(2) # 2
+            serve(2)  # 2
         elif (x_net + w_net < x_ball < 1000 and y_ball > 562) or (x_ball < 0):
             p1_score += 1
             serve(1)
