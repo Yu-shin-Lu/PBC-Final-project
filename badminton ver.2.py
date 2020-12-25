@@ -137,21 +137,24 @@ def restart(whowin):
         game.blit(text_score().render(str(p1_score), False, (255, 215, 0)), (390, 60))
         game.blit(text_score().render(str(p2_score), False, (255, 215, 0)), (550, 60))
         if whowin == p1_win:
-            game.blit(p1_win_text, (100, 300))
+            game.blit(p1_win_text, (40, 300))
             get_p("blue_5.png", x_p1, y_p1, w_p1, h_p1)
         else:
-            game.blit(p2_win_text, (600, 300))
+            game.blit(p2_win_text, (650, 300))
             get_p("red_6.png", x_p2, y_p2, w_p2, h_p2)
-        game.blit(play_again, (300, 150))
-        game.blit(button_play, (455, 265))
+        game.blit(play_again, (310, 150))
+        game.blit(button_play, (420, 265))
         game.blit(button_quit, (462, 346))   
         buttons = pygame.mouse.get_pressed()
         x1, y1 = pygame.mouse.get_pos()
         if x1 >= 400 and x1 <= 628 and y1 >= 262 and y1 <= 318:
             if buttons[0]:
+                pygame.mixer.Sound.play(click_voice)
                 restart = False
         elif x1 >=400 and x1 <= 628 and y1 >= 343 and y1 <= 399:
             if buttons[0]:
+                pygame.mixer.Sound.play(click_voice)
+                sleep(0.5)
                 pygame.quit()
         pygame.display.update()
 
@@ -159,10 +162,10 @@ p1_name = text_name().render('P LAYER 1', False, (255, 215, 0))
 p2_name = text_name().render('P LAYER 2', False, (255, 215, 0))
 
 welcome = text_score().render('ARE YOU READY', False, (255, 215, 0))
-play_again = text_score().render('Play Again', False, (255, 215, 0))
+play_again = text_score().render('P LAY AGAIN', False, (255, 215, 0))
 button_start = text_button().render('START', False, (255, 215, 0))
 button_quit = text_button().render('QUIT', False, (255, 215, 0))
-button_play = text_button().render('Play', False, (255, 215, 0))
+button_play = text_button().render('RESTART', False, (255, 215, 0))
 
 p1_score = 0
 p2_score = 0
@@ -190,8 +193,12 @@ kill_ball_voice = pygame.mixer.Sound(str(MUSIC_PATH) + str('/') + '打擊聲-2.m
 kill_ball_voice.set_volume(0.25)
 
 # 歡呼聲
-win_voice = pygame.mixer.Sound(str(MUSIC_PATH) + str('/') + '觀眾掌聲歡呼聲.mp3')
-win_voice.set_volume(0.25)
+win_voice = pygame.mixer.Sound(str(MUSIC_PATH) + str('/') + '小孩鼓掌歡呼聲.mp3')
+win_voice.set_volume(0.15)
+
+# 滑鼠點擊聲
+click_voice = pygame.mixer.Sound(str(MUSIC_PATH) + str('/') + '滑鼠點擊聲.mp3')
+click_voice.set_volume(0.3)
 
 p1_win_text = text_cele().render('P LAYER 1 WINS!', False, (255, 215, 0))
 p2_win_text = text_cele().render('P LAYER 2 WINS!', False, (255, 215, 0))
@@ -226,9 +233,12 @@ while start:
     x1, y1 = pygame.mouse.get_pos()
     if x1 >= 400 and x1 <= 628 and y1 >= 262 and y1 <= 318:
         if buttons[0]:
+            pygame.mixer.Sound.play(click_voice)
             start = False
     elif x1 >=400 and x1 <= 628 and y1 >= 343 and y1 <= 399:
         if buttons[0]:
+            pygame.mixer.Sound.play(click_voice)
+            sleep(0.5)
             pygame.quit()
     pygame.display.update()
 
@@ -253,11 +263,13 @@ while True:
     p1_win = False
     p2_win = False
     if p1_score == 11:
+        pygame.mixer.Sound.play(win_voice)
         p1_win = True
         restart(p1_win)
         p1_score = 0
         p2_score = 0
     elif p2_score == 11:
+        pygame.mixer.Sound.play(win_voice)
         p2_win = True
         restart(p2_win)
         p1_score = 0
@@ -457,5 +469,5 @@ while True:
 # 球要有兩個方向(球頭朝對面) ok
 # 場地線調整 ok
 # 重新開始按鈕(Optional:暫停鍵) ok
-# 音效(剩下觀眾歡呼聲)
+# 音效 ok
 # P2的人物動作合併 ok
