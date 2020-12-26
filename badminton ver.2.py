@@ -275,13 +275,13 @@ while True:
     # 慶祝訊息
     p1_win = False
     p2_win = False
-    if p1_score == 3:
+    if p1_score == 11:
         pygame.mixer.Sound.play(win_voice)
         p1_win = True
         restart_game(p1_win)
         p1_score = 0
         p2_score = 0
-    elif p2_score == 3:
+    elif p2_score == 11:
         pygame.mixer.Sound.play(win_voice)
         p2_win = True
         restart_game(p2_win)
